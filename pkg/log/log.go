@@ -3,6 +3,7 @@ package log
 import (
 	"os"
 
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -10,8 +11,8 @@ import (
 
 var Logger *zap.Logger
 
-func init() {
-	Logger = NewLogger("./logs/main.log", zapcore.InfoLevel, 1, 30, 7, true, "Main")
+func New() {
+	Logger = NewLogger(viper.GetString("logger.file"), zapcore.Level(viper.GetInt("logger.level")), 1, 30, 7, true, "Main")
 }
 
 /**

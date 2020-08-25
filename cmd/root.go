@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -48,6 +49,7 @@ func Execute() {
 }
 
 func init() {
+
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
@@ -63,6 +65,7 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -76,6 +79,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".os" (without extension).
 		viper.AddConfigPath(home)
+
 		viper.SetConfigName(".os")
 	}
 
@@ -85,4 +89,10 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+
+	viper.WatchConfig()
+	viper.OnConfigChange(func(event fsnotify.Event) {
+		fmt.Printf("Detect config change: %s \n", event.Name)
+	})
+
 }

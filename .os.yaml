@@ -1,0 +1,22 @@
+logger:
+  level: 0
+  file: './logs/sample.log'
+
+server:
+  address: ':8080'
+  staticDir: './public'
+
+db:
+  name: 'gin'
+  addr: '127.0.0.1:3306'
+  username: 'root'
+  password: '123456'
+  charset: 'utf8mb4'
+  parseTime: true
+  loc: 'Local'
+
+redis:
+  network: 'tcp'
+  address: '127.0.0.1:6379'
+
+test: 'bdds'

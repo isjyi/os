@@ -1,23 +1,19 @@
 package service
 
 import (
-	"fmt"
-
+	"github.com/gin-gonic/gin"
+	"github.com/isjyi/os/pkg/check"
+	"github.com/isjyi/os/pkg/db"
 	"github.com/isjyi/os/pkg/log"
-	"github.com/isjyi/os/pkg/mysql"
-	"github.com/isjyi/os/pkg/redis"
-	"github.com/jinzhu/gorm"
+	"github.com/isjyi/os/service/middleware"
+	route "github.com/isjyi/os/service/routes"
 	"go.uber.org/zap"
 )
 
-type application struct {
-	logger *zap.Logger
-	db     *gorm.DB
-	redis  *redis.RedisCli
-}
-
 func ListenAndServe() {
-	db, err := mysql.New(log.Logger)
+	log.New()
+
+	db, err := db.New()
 
 	if err != nil {
 		log.Logger.Error(err.Error(), zap.Error(err))
@@ -26,10 +22,13 @@ func ListenAndServe() {
 
 	defer db.Close()
 
-	app := &application{
-		logger: log.Logger,
-		db:     db,
-		redis:  redis.New(),
-	}
-	fmt.Println(app)
+	check.New()
+
+	gin.SetMode(gin.ReleaseMode)
+
+	r := gin.Default()
+
+	middleware.Global(r)
+	route.Routes(r)
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
 }
