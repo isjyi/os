@@ -1,22 +1,34 @@
-logger:
+log:
   level: 0
-  file: './logs/sample.log'
+  file: './logs/api.log'
+  max_size: 100
+  max_backups: 30
+  max_age: 15
+  compress: true
+  service_name: 'os'
 
-server:
-  address: ':8080'
-  staticDir: './public'
+system:
+  addr: 8080
+  static_dir: './public'
+  mode: 'debug'
+  db-type: 'mysql'
 
-db:
-  name: 'gin'
+mysql:
+  db-name: 'os'
   addr: '127.0.0.1:3306'
   username: 'root'
   password: '123456'
-  charset: 'utf8mb4'
-  parseTime: true
-  loc: 'Local'
+  max-idle-conns: 50
+  max-open-conns: 200
+  max_life_time: 5
+  log-mode: true
 
 redis:
   network: 'tcp'
-  address: '127.0.0.1:6379'
+  addr: '127.0.0.1:6379'
+  password: ''
+  db: 0
 
+jwt:
+  signing-key: 'jwt_test'
 test: 'bdds'

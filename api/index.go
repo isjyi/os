@@ -4,19 +4,17 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gomodule/redigo/redis"
-	"github.com/isjyi/os/pkg/check"
-	"github.com/isjyi/os/pkg/log"
-	"github.com/spf13/viper"
+	"github.com/isjyi/os/global"
+	"github.com/isjyi/os/pkg/redis"
 	"go.uber.org/zap"
 )
 
 func Set(c *gin.Context) {
 	name := c.DefaultQuery("name", "jerry")
-	ok, err := check.Rcli.Exec("SET", "TEST", name)
+	ok, err := redis.Exec("SET", "TEST", name)
 
 	if err != nil {
-		log.Logger.Error(err.Error(), zap.Error(err))
+		global.OS_LOG.Error(err.Error(), zap.Error(err))
 		c.JSON(http.StatusInternalServerError, err)
 	}
 	c.JSON(200, gin.H{
@@ -25,10 +23,10 @@ func Set(c *gin.Context) {
 }
 
 func Get(c *gin.Context) {
-	_, err := redis.String(check.Rcli.Exec("GET", "TEST"))
+	ok, err := redis.Exec("GET", "TEST")
 
 	if err != nil {
-		log.Logger.Error(err.Error(), zap.Error(err))
+		global.OS_LOG.Error(err.Error(), zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
@@ -36,6 +34,6 @@ func Get(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"msg": viper.GetString("test"),
+		"msg": ok,
 	})
 }

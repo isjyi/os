@@ -1,0 +1,27 @@
+{"level":"info","time":"2020-08-28T16:20:46.939+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:20:46.939+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:25","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:21:17.428+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:21:19.414+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:21:19.415+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:25","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:22:05.540+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:32:39.126+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:32:39.126+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:25","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:43:23.296+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:49:08.995+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:49:55.690+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:49:55.776+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:34","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:53:32.754+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:53:34.874+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:53:34.874+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:21","msg":"use middleware cors","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:53:34.955+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:29","msg":"swagger register success","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:53:34.955+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:36","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:54:18.953+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:21.122+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:21.122+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:21","msg":"use middleware cors","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:21.122+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:36","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:54:36.769+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:38.819+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/redis.go:49","msg":"redis connect ping response: PONG","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:38.820+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:21","msg":"use middleware cors","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:38.900+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:29","msg":"swagger register success","serviceName":"os"}
+{"level":"info","time":"2020-08-28T16:54:38.900+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/initialize/router.go:36","msg":"router register success","serviceName":"os"}
+{"level":"error","time":"2020-08-28T16:55:49.297+0800","linenum":"/Users/yc/work/src/github.com/isjyi/os/service/service.go:34","msg":"accept tcp [::]:8080: use of closed network connection","serviceName":"os"}

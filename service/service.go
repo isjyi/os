@@ -1,34 +1,36 @@
 package service
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/isjyi/os/pkg/check"
-	"github.com/isjyi/os/pkg/db"
-	"github.com/isjyi/os/pkg/log"
-	"github.com/isjyi/os/service/middleware"
-	route "github.com/isjyi/os/service/routes"
-	"go.uber.org/zap"
+	"fmt"
+	"time"
+
+	"github.com/isjyi/os/global"
+	"github.com/isjyi/os/initialize"
 )
 
+type server interface {
+	ListenAndServe() error
+}
+
 func ListenAndServe() {
-	log.New()
 
-	db, err := db.New()
+	defer global.OS_DB.Close()
 
+	Router := initialize.Routers()
+
+	Router.Static("/public", global.OS_CONFIG.System.StaticDir)
+
+	address := fmt.Sprintf(":%d", global.OS_CONFIG.System.Addr)
+
+	s := initServer(address, Router)
+	// 保证文本顺序输出
+	// In order to ensure that the text order output can be deleted
+	time.Sleep(10 * time.Microsecond)
+
+	global.OS_LOG.Debug(fmt.Sprintf("server run success on %s", address))
+
+	err := s.ListenAndServe()
 	if err != nil {
-		log.Logger.Error(err.Error(), zap.Error(err))
-		return
+		global.OS_LOG.Error(err.Error())
 	}
-
-	defer db.Close()
-
-	check.New()
-
-	gin.SetMode(gin.ReleaseMode)
-
-	r := gin.Default()
-
-	middleware.Global(r)
-	route.Routes(r)
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
 }

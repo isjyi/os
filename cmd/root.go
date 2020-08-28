@@ -20,13 +20,16 @@ import (
 	"os"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/isjyi/os/global"
+	"github.com/isjyi/os/initialize"
 	"github.com/spf13/cobra"
 
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
+
+const defaultConfigFile = ".os.yaml"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -50,7 +53,7 @@ func Execute() {
 
 func init() {
 
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig, appInitialize)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -65,34 +68,45 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-
+	v := viper.New()
 	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
+		v.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
+		v.SetConfigFile(defaultConfigFile)
+	}
+
+	v.AutomaticEnv()
+
+	if err := v.ReadInConfig(); err == nil {
+		fmt.Println("Using config file:", v.ConfigFileUsed())
+	}
+
+	v.WatchConfig()
+	v.OnConfigChange(func(event fsnotify.Event) {
+		fmt.Println("config file changed:", event.Name)
+		if err := v.Unmarshal(&global.OS_CONFIG); err != nil {
 			fmt.Println(err)
-			os.Exit(1)
 		}
-
-		// Search config in home directory with name ".os" (without extension).
-		viper.AddConfigPath(home)
-
-		viper.SetConfigName(".os")
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
-
-	viper.WatchConfig()
-	viper.OnConfigChange(func(event fsnotify.Event) {
-		fmt.Printf("Detect config change: %s \n", event.Name)
 	})
 
+	if err := v.Unmarshal(&global.OS_CONFIG); err != nil {
+		fmt.Println(err)
+	}
+
+	global.OS_VP = v
+}
+
+func appInitialize() {
+	initialize.Logger()
+
+	switch global.OS_CONFIG.System.DbType {
+	case "mysql":
+		initialize.Mysql()
+	default:
+		initialize.Mysql()
+	}
+
+	initialize.AutoMigrate()
+
+	initialize.Redis()
 }
