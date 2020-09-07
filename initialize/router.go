@@ -5,6 +5,7 @@ import (
 	"github.com/isjyi/os/api"
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/middleware"
+	"github.com/isjyi/os/router"
 	_ "github.com/isjyi/os/swagger"
 	"github.com/rakyll/statik/fs"
 )
@@ -28,10 +29,12 @@ func Routers() *gin.Engine {
 		Router.StaticFS("/swagger", statikFS)
 		global.OS_LOG.Info("swagger register success")
 	}
-
+	v1 := Router.Group("/api/v1")
 	Router.GET("/set", api.Set)
 
 	Router.GET("/get", api.Get)
+
+	router.InitBaseRouter(v1)
 
 	global.OS_LOG.Info("router register success")
 

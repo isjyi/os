@@ -1,54 +1,87 @@
 basePath: /api/v1
+definitions:
+  model.User:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      nickName:
+        type: string
+      phone:
+        type: string
+      uuid:
+        type: string
+    type: object
+  resource.SysUserResource:
+    properties:
+      user:
+        $ref: '#/definitions/model.User'
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      msg:
+        type: string
+    type: object
+  service.RegisterStruct:
+    properties:
+      nickname:
+        type: string
+      passwrod:
+        type: string
+      phone:
+        type: string
+    required:
+    - passwrod
+    - phone
+    type: object
 host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
+    email: zhangbiao19931203@gmail.com
+    name: OS API
   description: This is a sample server celler server.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger Example API
+  title: OS Example API
   version: "1.0"
-paths: {}
+paths:
+  /base/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册接口
+      parameters:
+      - description: param
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.RegisterStruct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/resource.SysUserResource'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 用户注册账号
+      tags:
+      - Base
 securityDefinitions:
-  ApiKeyAuth:
+  JWT:
     in: header
     name: Authorization
     type: apiKey
-  BasicAuth:
-    type: basic
-  OAuth2AccessCode:
-    authorizationUrl: https://example.com/oauth/authorize
-    flow: accessCode
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-    tokenUrl: https://example.com/oauth/token
-    type: oauth2
-  OAuth2Application:
-    flow: application
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-      write: ' Grants write access'
-    tokenUrl: https://example.com/oauth/token
-    type: oauth2
-  OAuth2Implicit:
-    authorizationUrl: https://example.com/oauth/authorize
-    flow: implicit
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-      write: ' Grants write access'
-    type: oauth2
-  OAuth2Password:
-    flow: password
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-      read: ' Grants read access'
-      write: ' Grants write access'
-    tokenUrl: https://example.com/oauth/token
-    type: oauth2
 swagger: "2.0"
-x-extension-openapi:
-  example: value on a json format

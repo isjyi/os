@@ -1,26 +1,27 @@
 log:
   level: 0
   file: './logs/api.log'
-  max_size: 100
-  max_backups: 30
-  max_age: 15
+  max-size: 100
+  max-backups: 30
+  max-age: 15
   compress: true
-  service_name: 'os'
+  service-name: 'os'
 
 system:
   addr: 8080
-  static_dir: './public'
+  static-dir: './public'
   mode: 'debug'
   db-type: 'mysql'
+  encryption-cost: 12
 
 mysql:
   db-name: 'os'
   addr: '127.0.0.1:3306'
   username: 'root'
-  password: '123456'
+  password: ''
   max-idle-conns: 50
   max-open-conns: 200
-  max_life_time: 5
+  max-life-time: 5
   log-mode: true
 
 redis:

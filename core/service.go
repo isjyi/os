@@ -1,4 +1,4 @@
-package service
+package core
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/initialize"
+	"github.com/isjyi/os/utils"
 )
 
 type server interface {
@@ -21,6 +22,8 @@ func ListenAndServe() {
 	Router.Static("/public", global.OS_CONFIG.System.StaticDir)
 
 	address := fmt.Sprintf(":%d", global.OS_CONFIG.System.Addr)
+
+	utils.InitValiadtor()
 
 	s := initServer(address, Router)
 	// 保证文本顺序输出

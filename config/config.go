@@ -13,11 +13,12 @@ type Server struct {
 }
 
 type System struct {
-	Env       string `mapstructure:"env" json:"env" yaml:"env"`
-	Addr      int    `mapstructure:"addr" json:"addr" yaml:"addr"`
-	StaticDir string `mapstructure:"static_dir" json:"static_dir" yaml:"static_dir"`
-	DbType    string `mapstructure:"db-type" json:"dbType" yaml:"db-type"`
-	Mode      string `mapstructure:"mode" json:"mode" yaml:"mode"`
+	Env            string `mapstructure:"env" json:"env" yaml:"env"`
+	Addr           int    `mapstructure:"addr" json:"addr" yaml:"addr"`
+	StaticDir      string `mapstructure:"static-dir" json:"staticDir" yaml:"static-dir"`
+	DbType         string `mapstructure:"db-type" json:"dbType" yaml:"db-type"`
+	Mode           string `mapstructure:"mode" json:"mode" yaml:"mode"`
+	EncryptionCost int    `mapstructure:"encryption-cost" json:"encryptionCost" yaml:"encryption-cost"`
 }
 
 type JWT struct {
@@ -28,11 +29,11 @@ type Mysql struct {
 	Username     string `mapstructure:"username" json:"username" yaml:"username"`
 	Password     string `mapstructure:"password" json:"password" yaml:"password"`
 	Addr         string `mapstructure:"addr" json:"addr" yaml:"addr"`
-	Dbname       string `mapstructure:"db-name" json:"dbname" yaml:"db-name"`
+	Dbname       string `mapstructure:"db-name" json:"dbName" yaml:"db-name"`
 	Config       string `mapstructure:"config" json:"config" yaml:"config"`
 	MaxIdleConns int    `mapstructure:"max-idle-conns" json:"maxIdleConns" yaml:"max-idle-conns"`
 	MaxOpenConns int    `mapstructure:"max-open-conns" json:"maxOpenConns" yaml:"max-open-conns"`
-	MaxLifetime  int    `mapstructure:"max_life_time" json:"max_life_time" yaml:"max_life_time"`
+	MaxLifetime  int    `mapstructure:"max-life-time" json:"maxLifeTime" yaml:"max-life-time"`
 	LogMode      bool   `mapstructure:"log-mode" json:"logMode" yaml:"log-mode"`
 }
 
@@ -46,11 +47,11 @@ type Redis struct {
 type Log struct {
 	File        string `mapstructure:"file" json:"file" yaml:"file"`
 	Level       int    `mapstructure:"level" json:"level" yaml:"level"`
-	MaxSize     int    `mapstructure:"max_size" json:"max_size" yaml:"max_size"`
-	MaxBackups  int    `mapstructure:"max_backups" json:"max_backups" yaml:"max_backups"`
-	MaxAge      int    `mapstructure:"max_age" json:"max_age" yaml:"max_age"`
+	MaxSize     int    `mapstructure:"max-size" json:"maxSize" yaml:"max-size"`
+	MaxBackups  int    `mapstructure:"max-backups" json:"maxBackups" yaml:"max-backups"`
+	MaxAge      int    `mapstructure:"max-age" json:"maxAge" yaml:"max-age"`
 	Compress    bool   `mapstructure:"compress" json:"compress" yaml:"compress"`
-	ServiceName string `mapstructure:"service_name" json:"service_name" yaml:"service_name"`
+	ServiceName string `mapstructure:"service-name" json:"serviceName" yaml:"service-name"`
 }
 
 func (db Mysql) DNS() string {
