@@ -17,6 +17,8 @@ package cmd
 
 import (
 	"github.com/isjyi/os/core"
+	"github.com/isjyi/os/global"
+	"github.com/isjyi/os/initialize"
 	"github.com/spf13/cobra"
 )
 
@@ -36,5 +38,23 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	cobra.OnInitialize(appInitialize)
 	rootCmd.AddCommand(startCmd)
+}
+
+func appInitialize() {
+	initialize.Logger()
+
+	switch global.OS_CONFIG.System.DbType {
+	case "mysql":
+		initialize.Mysql()
+	default:
+		initialize.Mysql()
+	}
+
+	initialize.AutoMigrate()
+
+	initialize.Redis()
+
+	initialize.JWTManager()
 }

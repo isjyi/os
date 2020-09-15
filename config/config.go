@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -10,6 +11,7 @@ type Server struct {
 	Mysql  Mysql  `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
 	Redis  Redis  `mapstructure:"redis" json:"redis" yaml:"redis"`
 	Log    Log    `mapstructure:"log" json:"log" yaml:"log"`
+	SMS    SMS    `mapstructure:"sms" json:"sms" yaml:"sms"`
 }
 
 type System struct {
@@ -23,6 +25,7 @@ type System struct {
 
 type JWT struct {
 	SigningKey string `mapstructure:"signing-key" json:"signingKey" yaml:"signing-key"`
+	ExpiresAt  int    `mapstructure:"expires-at" json:"expiresAt" yaml:"expires-at"`
 }
 
 type Mysql struct {
@@ -52,6 +55,27 @@ type Log struct {
 	MaxAge      int    `mapstructure:"max-age" json:"maxAge" yaml:"max-age"`
 	Compress    bool   `mapstructure:"compress" json:"compress" yaml:"compress"`
 	ServiceName string `mapstructure:"service-name" json:"serviceName" yaml:"service-name"`
+}
+
+type SMS struct {
+	AccessKeyId  string `mapstructure:"access-key-id" json:"accessKeyId" yaml:"access-key-id"`
+	AccessSecret string `mapstructure:"access-secret" json:"accessSecret" yaml:"access-secret"`
+}
+
+func (s SMS) Marshal(code int) (param string, err error) {
+	c := struct {
+		Code int `json:"code"`
+	}{
+		code,
+	}
+
+	str, err := json.Marshal(c) //json序列化
+	if err != nil {
+		return
+	}
+
+	param = string(str[:])
+	return
 }
 
 func (db Mysql) DNS() string {

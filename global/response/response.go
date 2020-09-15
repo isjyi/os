@@ -7,10 +7,10 @@ import (
 )
 
 type Response struct {
-	Code int         `json:"code"`
-	Data interface{} `json:"data"`
-	Msg  string      `json:"msg"`
-}
+	Code int         `json:"code"` // Code
+	Data interface{} `json:"data"` // Data
+	Msg  string      `json:"msg"`  // Message
+} //@name Response
 
 const (
 	ERROR   = 7
@@ -31,6 +31,14 @@ func success(code int, data interface{}, msg string, c *gin.Context) {
 
 func error(code int, data interface{}, msg string, c *gin.Context) {
 	c.JSON(http.StatusBadRequest, Response{
+		code,
+		data,
+		msg,
+	})
+}
+
+func server(code int, data interface{}, msg string, c *gin.Context) {
+	c.JSON(http.StatusInternalServerError, Response{
 		code,
 		data,
 		msg,
@@ -61,6 +69,14 @@ func FailWithMessage(message string, c *gin.Context) {
 	error(ERROR, map[string]interface{}{}, message, c)
 }
 
-func FailWithDetailed(code int, data interface{}, message string, c *gin.Context) {
-	error(code, data, message, c)
+func FailWithDetailed(data interface{}, c *gin.Context) {
+	error(ERROR, data, "操作失败", c)
+}
+
+func ServerError(c *gin.Context) {
+	error(ERROR, map[string]interface{}{}, "服务器错误", c)
+}
+
+func ServerErrorWithMessage(message string, c *gin.Context) {
+	server(ERROR, map[string]interface{}{}, message, c)
 }

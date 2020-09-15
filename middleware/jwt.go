@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"net/http"
-	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isjyi/os/pkg/jwt"
+	"github.com/isjyi/os/global"
 )
 
 func JWTAuthMiddleware() gin.HandlerFunc {
@@ -15,24 +15,13 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		if authHeader == "" {
 			c.JSON(http.StatusOK, gin.H{
 				"code": 2003,
-				"msg":  "请求头中auth为空",
+				"msg":  "请求头中token为空",
 			})
 			c.Abort()
 			return
 		}
 
-		parts := strings.SplitN(authHeader, " ", 2)
-
-		if !(len(parts) == 2 && parts[0] == "Bearer") {
-			c.JSON(http.StatusOK, gin.H{
-				"code": 2004,
-				"msg":  "请求头中auth格式有误",
-			})
-			c.Abort()
-			return
-		}
-
-		claims, err := jwt.ParseToken(parts[1])
+		claims, err := global.OS_JWT.ParseToken(authHeader)
 
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
@@ -43,7 +32,13 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("id", claims.ID)
+		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime {
+			claims.ExpiresAt = time.Now().Unix() + 60*60*24*7
+			newToken, _ := global.OS_JWT.CreateToken(*claims)
+			c.Header("Authorization", newToken)
+		}
+
+		c.Set("claims", claims)
 		c.Next()
 	}
 }

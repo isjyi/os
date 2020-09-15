@@ -7,40 +7,45 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/isjyi/os/model"
-	"github.com/spf13/viper"
 )
 
 type JWTManager struct {
-	secretKey     string
-	tokenDuration time.Duration
+	SecretKey string
+	ExpiresAt time.Duration
 }
 
 type UserClaims struct {
 	jwt.StandardClaims
-	ID uint `json:"id"`
+	ID         uint   `json:"id"`
+	NickName   string `json:"nick_name"`
+	HeaderImg  string `json:"header_img"`
+	BufferTime int64
 }
 
-var Jwt *JWTManager
-
-func NewJWTManager(secretKey string, tokenDuration time.Duration) *JWTManager {
-	return &JWTManager{secretKey, tokenDuration}
+func (manager *JWTManager) CreateToken(claims UserClaims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(manager.SecretKey))
 }
 
-func (manager *JWTManager) Generate(user *model.User) (string, error) {
+func (manager *JWTManager) Generate(user model.User) (string, error) {
 	claims := UserClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(manager.tokenDuration).Unix(),
+			ExpiresAt: time.Now().Add(manager.ExpiresAt).Unix(),
+			NotBefore: time.Now().Unix() - 1000,
+			Issuer:    "os",
 		},
-		ID: user.ID,
+		ID:         user.ID,
+		NickName:   user.NickName,
+		HeaderImg:  user.HeaderImg,
+		BufferTime: 60 * 60 * 24,
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(manager.secretKey))
+	return manager.CreateToken(claims)
 }
 
-func ParseToken(tokenString string) (*UserClaims, error) {
+func (manager *JWTManager) ParseToken(tokenString string) (*UserClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(viper.GetString("server.jwtSecret")), nil
+		return []byte(manager.SecretKey), nil
 	})
 
 	if claims, ok := token.Claims.(*UserClaims); ok && token.Valid {

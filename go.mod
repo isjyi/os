@@ -17,6 +17,7 @@ require (
 	github.com/isjyi/grpc-demo v0.0.0-20200704104859-f5f9226e36ea
 	github.com/jinzhu/gorm v1.9.16
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/panshiqu/dysms v0.0.0-20171201022106-5af765604ec1
 	github.com/rakyll/statik v0.1.7
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/cobra v1.0.0

@@ -6,9 +6,11 @@ import (
 )
 
 func InitBaseRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
-	R = Router.Group("/base")
+	R = Router.Group("base")
 	{
 		R.POST("register", v1.Register)
+		R.POST("login", v1.Login)
+		R.POST("captcha", v1.Captcha)
 	}
 
 	return

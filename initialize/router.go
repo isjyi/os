@@ -35,6 +35,7 @@ func Routers() *gin.Engine {
 	Router.GET("/get", api.Get)
 
 	router.InitBaseRouter(v1)
+	router.InitUserRouter(v1)
 
 	global.OS_LOG.Info("router register success")
 

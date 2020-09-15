@@ -32,4 +32,7 @@ redis:
 
 jwt:
   signing-key: 'jwt_test'
-test: 'bdds'
+  expires-at: 168
+sms:
+  access-key-id: 'xx'
+  access-secret: 'xx'

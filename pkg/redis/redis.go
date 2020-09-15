@@ -1,6 +1,7 @@
 package redis
 
 import (
+	red "github.com/garyburd/redigo/redis"
 	"github.com/isjyi/os/global"
 )
 
@@ -20,4 +21,12 @@ func Exec(cmd string, key interface{}, args ...interface{}) (interface{}, error)
 		}
 	}
 	return con.Do(cmd, parmas...)
+}
+
+func String(reply interface{}, err error) (string, error) {
+	return red.String(reply, err)
+}
+
+func Int(reply interface{}, err error) (int, error) {
+	return red.Int(reply, err)
 }

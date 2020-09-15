@@ -23,7 +23,7 @@ func ListenAndServe() {
 
 	address := fmt.Sprintf(":%d", global.OS_CONFIG.System.Addr)
 
-	utils.InitValiadtor()
+	utils.InitTrans("zh")
 
 	s := initServer(address, Router)
 	// 保证文本顺序输出

@@ -6,7 +6,6 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/isjyi/os/global"
-	"github.com/isjyi/os/initialize"
 	"github.com/spf13/cobra"
 
 	"github.com/spf13/viper"
@@ -31,14 +30,13 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
 		os.Exit(1)
 	}
 }
 
 func init() {
 
-	cobra.OnInitialize(initConfig, appInitialize)
+	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -62,8 +60,8 @@ func initConfig() {
 
 	v.AutomaticEnv()
 
-	if err := v.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", v.ConfigFileUsed())
+	if err := v.ReadInConfig(); err != nil {
+		fmt.Println(err)
 	}
 
 	v.WatchConfig()
@@ -79,19 +77,4 @@ func initConfig() {
 	}
 
 	global.OS_VP = v
-}
-
-func appInitialize() {
-	initialize.Logger()
-
-	switch global.OS_CONFIG.System.DbType {
-	case "mysql":
-		initialize.Mysql()
-	default:
-		initialize.Mysql()
-	}
-
-	initialize.AutoMigrate()
-
-	initialize.Redis()
 }

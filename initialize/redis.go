@@ -1,7 +1,6 @@
 package initialize
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -39,12 +38,12 @@ func Redis() {
 		global.OS_LOG.Error("REDIS连接失败", zap.Error(err))
 		os.Exit(0)
 	}
-	pong, err := red.String(conn.Do("PING"))
+	_, err := red.String(conn.Do("PING"))
 
 	if err != nil {
 		global.OS_LOG.Error(err.Error())
 		os.Exit(0)
 	}
 
-	global.OS_LOG.Info(fmt.Sprintf("redis connect ping response: %s", pong))
+	// global.OS_LOG.Info(fmt.Sprintf("redis connect ping response: %s", pong))
 }
