@@ -1,29 +1,50 @@
+/*
+Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package cmd
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/fsnotify/fsnotify"
+	"github.com/isjyi/os/cmd/migrate"
+	"github.com/isjyi/os/cmd/server"
 	"github.com/isjyi/os/global"
+	"github.com/isjyi/os/tools"
 	"github.com/spf13/cobra"
-
-	"github.com/spf13/viper"
 )
-
-var cfgFile string
-
-const defaultConfigFile = ".os.yaml"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "os",
-	Short: "A test demo",
-	Long:  `Demo is a test appcation for print things`,
-
+	Use:          "os",
+	Short:        "os",
+	SilenceUsage: true,
+	Long:         `os`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		tip()
 	},
+}
+
+func init() {
+	rootCmd.AddCommand(migrate.MigrateCmd)
+	rootCmd.AddCommand(server.ServerCmd)
+}
+
+func tip() {
+	usageStr := `欢迎使用 ` + tools.Green(`os `+global.Version) + ` 可以使用 ` + tools.Red(`-h`) + ` 查看命令`
+	fmt.Printf("%s\n", usageStr)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -32,49 +53,4 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
-}
-
-func init() {
-
-	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.os.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-// initConfig reads in config file and ENV variables if set.
-func initConfig() {
-	v := viper.New()
-	if cfgFile != "" {
-		v.SetConfigFile(cfgFile)
-	} else {
-		v.SetConfigFile(defaultConfigFile)
-	}
-
-	v.AutomaticEnv()
-
-	if err := v.ReadInConfig(); err != nil {
-		fmt.Println(err)
-	}
-
-	v.WatchConfig()
-	v.OnConfigChange(func(event fsnotify.Event) {
-		fmt.Println("config file changed:", event.Name)
-		if err := v.Unmarshal(&global.OS_CONFIG); err != nil {
-			fmt.Println(err)
-		}
-	})
-
-	if err := v.Unmarshal(&global.OS_CONFIG); err != nil {
-		fmt.Println(err)
-	}
-
-	global.OS_VP = v
 }

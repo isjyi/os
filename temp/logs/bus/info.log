@@ -1,0 +1,9 @@
+2020-10-08T18:12:16.727+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:21	[0;0;32mmysql connect success ![0m
+2020-10-08T18:12:16.745+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:63	starting api server
+2020-10-09T14:53:13.609+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:21	[0;0;32mmysql connect success ![0m
+2020-10-09T14:53:13.629+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:73	starting api server
+2020-10-09T14:53:37.975+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:21	[0;0;32mmysql connect success ![0m
+2020-10-09T14:53:37.998+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:73	starting api server
+2020-10-09T14:58:14.821+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:21	[0;0;32mmysql connect success ![0m
+2020-10-09T14:58:14.840+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:73	starting api server
+2020-10-10T14:17:23.582+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:21	[0;0;32mmysql connect success ![0m
