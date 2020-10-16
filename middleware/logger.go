@@ -38,7 +38,7 @@ func LoggerToFile() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 
 		if c.Request.Method != "OPTIONS" && config.OSConfig.Logger.EnabledREQ {
-			global.ReqLogger.Sugar().Info(fmt.Printf("%s %s %3d %13v %15s",
+			global.ReqLogger.Sugar().Info(fmt.Sprintf("%s %s %3d %13v %15s",
 				reqMethod,
 				reqUri,
 				statusCode,

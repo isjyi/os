@@ -8,6 +8,7 @@ import (
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/models"
 	"github.com/isjyi/os/pkg/jwt"
+	"github.com/isjyi/os/server"
 	"github.com/isjyi/os/tools/config"
 	"github.com/mojocn/base64Captcha"
 )
@@ -43,13 +44,14 @@ func IdentityHandler(c *gin.Context) interface{} {
 // @Description Reply will be of the form {"token": "TOKEN"}.
 // @Description dev mode：It should be noted that all fields cannot be empty, and a value of 0 can be passed in addition to the account password
 // @Description 注意：开发模式：需要注意全部字段不能为空，账号密码外可以传入0值
+// @Tags Base
 // @Accept  application/json
 // @Product application/json
-// @Param account body models.Login  true "account"
+// @Param account body server.Login  true "account"
 // @Success 200 {string} string "{"code": 200, "expire": "2019-08-07T12:45:48+08:00", "token": ".eyJleHAiOjE1NjUxNTMxNDgsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTU2NTE0OTU0OH0.-zvzHvbg0A" }"
-// @Router /login [post]
+// @Router /api/v1/login [post]
 func Authenticator(c *gin.Context) (interface{}, error) {
-	var loginVals models.Login
+	var loginVals server.Login
 
 	if err := c.ShouldBind(&loginVals); err != nil {
 		return nil, jwt.ErrMissingLoginValues
@@ -73,10 +75,11 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 // @Description 获取token
 // LoginHandler can be used by clients to get a jwt token.
 // Reply will be of the form {"token": "TOKEN"}.
+// @Tags Base
 // @Accept  application/json
 // @Product application/json
 // @Success 200 {string} string "{"code": 200, "msg": "成功退出系统" }"
-// @Router /logout [post]
+// @Router /api/v1/logout [post]
 // @Security Bearer
 func LogOut(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{

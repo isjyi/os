@@ -13,6 +13,7 @@ var (
 	Logger         *zap.Logger
 	ReqLogger      *zap.Logger
 	Version        string
+	Check          *redis.Pool
 	RedisPool      *redis.Pool
 )
 

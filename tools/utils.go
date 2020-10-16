@@ -18,10 +18,22 @@ func StrToInt(err error, index string) int {
 
 func CompareHashAndPassword(e string, p string) (bool, error) {
 	err := bcrypt.CompareHashAndPassword([]byte(e), []byte(p))
+
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
+}
+
+func GenerateFromPassword(p string, cost int) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(p), cost)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(bytes), nil
 }
 
 // Assert 条件断言

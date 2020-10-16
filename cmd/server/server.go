@@ -29,9 +29,11 @@ import (
 	"github.com/isjyi/os/global"
 	mycasbin "github.com/isjyi/os/pkg/casbin"
 	"github.com/isjyi/os/pkg/logger"
+	"github.com/isjyi/os/pkg/redis"
 	"github.com/isjyi/os/router"
 	"github.com/isjyi/os/tools"
 	"github.com/isjyi/os/tools/config"
+	"github.com/isjyi/os/utils"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )
@@ -66,7 +68,9 @@ func setup() {
 	logger.Setup()
 	//3. 初始化数据库链接
 	database.Setup(config.OSConfig.Database.Driver)
-	//4. 接口访问控制加载
+	//4. 初始化redis链接
+	redis.Setup()
+	//5. 接口访问控制加载
 	mycasbin.Setup()
 
 	usageStr := `starting api server`
@@ -83,6 +87,8 @@ func run() error {
 	r := router.InitRouter()
 
 	defer global.Eloquent.Close()
+
+	utils.InitTrans("zh")
 
 	srv := &http.Server{
 		Addr:    config.OSConfig.Application.Host + ":" + config.OSConfig.Application.Port,

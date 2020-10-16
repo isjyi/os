@@ -4,12 +4,20 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+	"github.com/isjyi/os/utils"
 )
 
 // 失败数据处理
 func Error(c *gin.Context, code int, err error, msg string) {
 	var res Response
-	res.Msg = err.Error()
+	errs, ok := err.(validator.ValidationErrors)
+	if !ok {
+		res.Msg = err.Error() // 翻译校验错误提示
+	} else {
+		res.Data = utils.T(errs)
+	}
+
 	if msg != "" {
 		res.Msg = msg
 	}

@@ -1,0 +1,1 @@
+2020-10-14T15:54:27.329+0800	ERROR	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:39	REDIS连接失败{error 26 0  dial tcp 127.0.0.1:6379: i/o timeout}

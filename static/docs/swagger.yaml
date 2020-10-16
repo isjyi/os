@@ -1,0 +1,143 @@
+definitions:
+  Login:
+    properties:
+      code:
+        description: 验证码
+        type: string
+      passwrod:
+        description: 密码
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      uuid:
+        description: 验证码唯一id
+        type: string
+    required:
+    - code
+    - passwrod
+    - phone
+    - uuid
+    type: object
+  Register:
+    properties:
+      code:
+        description: 验证码
+        type: string
+      nickname:
+        description: 用户昵称
+        type: string
+      passwrod:
+        description: 密码
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      uuid:
+        description: 验证码唯一id
+        type: string
+    required:
+    - code
+    - passwrod
+    - phone
+    - uuid
+    type: object
+  app.Response:
+    properties:
+      code:
+        description: 代码
+        example: 200
+        type: integer
+      data:
+        description: 数据集
+        type: object
+      msg:
+        description: 消息
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/captcha:
+    get:
+      consumes:
+      - application/json
+      description: 获取验证码
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 200,"data": [...]}'
+          schema:
+            type: string
+      summary: 获取验证码
+      tags:
+      - Base
+  /api/v1/login:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        获取token
+        LoginHandler can be used by clients to get a jwt token.
+        Payload needs to be json in the form of {"username": "USERNAME", "password": "PASSWORD"}.
+        Reply will be of the form {"token": "TOKEN"}.
+        dev mode：It should be noted that all fields cannot be empty, and a value of 0 can be passed in addition to the account password
+        注意：开发模式：需要注意全部字段不能为空，账号密码外可以传入0值
+      parameters:
+      - description: account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/Login'
+      responses:
+        "200":
+          description: '{"code": 200, "expire": "2019-08-07T12:45:48+08:00", "token": ".eyJleHAiOjE1NjUxNTMxNDgsImlkIjoiYWRtaW4iLCJvcmlnX2lhdCI6MTU2NTE0OTU0OH0.-zvzHvbg0A" }'
+          schema:
+            type: string
+      summary: 登陆
+      tags:
+      - Base
+  /api/v1/logout:
+    post:
+      consumes:
+      - application/json
+      description: 获取token
+      responses:
+        "200":
+          description: '{"code": 200, "msg": "成功退出系统" }'
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: 退出登录
+      tags:
+      - Base
+  /api/v1/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册接口
+      parameters:
+      - description: param
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "402":
+          description: Payment Required
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 用户注册账号
+      tags:
+      - Base
+swagger: "2.0"
