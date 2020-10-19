@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/isjyi/os/api/v1/system"
 	"github.com/isjyi/os/handler"
+	"github.com/isjyi/os/middleware"
 	"github.com/isjyi/os/pkg/jwt"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -23,7 +24,7 @@ func InitSysRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.Rou
 	// 无需认证
 	sysNoCheckRoleRouter(g)
 	// 需要认证
-	// sysCheckRoleRouterInit(g, authMiddleware)
+	sysCheckRoleRouterInit(g, authMiddleware)
 
 	return g
 }
@@ -57,4 +58,19 @@ func sysNoCheckRoleRouter(r *gin.RouterGroup) {
 	v1 := r.Group("/api/v1")
 	v1.POST("/register", system.Register)
 	v1.GET("/captcha", system.GenerateCaptchaHandler)
+}
+
+func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	v1 := r.Group("/api/v1")
+	v1.POST("/login", authMiddleware.LoginHandler)
+
+	registerBaseRouter(v1, authMiddleware)
+}
+
+func registerBaseRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	v1auth := v1.Group("").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
+	{
+		v1auth.POST("/logout", handler.Logout)
+		v1auth.GET("/role", system.GetRole)
+	}
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/models"
+	"github.com/isjyi/os/pkg/jwt"
 	"github.com/isjyi/os/tools"
 	"github.com/isjyi/os/tools/config"
 	"github.com/jinzhu/gorm"
@@ -23,9 +24,11 @@ var store = base64Captcha.DefaultMemStore
 func (reg *Register) Register() (err error) {
 	var user models.SysUser
 
-	// if !store.Verify(reg.UUID, reg.Code, true) {
-	// 	return jwt.ErrInvalidVerificationode
-	// }
+	if config.OSConfig.Application.Mode != "dev" {
+		if !store.Verify(reg.UUID, reg.Code, true) {
+			return jwt.ErrInvalidVerificationode
+		}
+	}
 
 	if !errors.Is(global.Eloquent.Where("phone = ?", reg.Phone).First(&user).Error, gorm.ErrRecordNotFound) { // 判断用户名是否注册
 		return errors.New("用户名已注册")

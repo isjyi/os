@@ -18,13 +18,16 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "OS API",
+            "email": "zhangbiao19931203@gmail.com"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/captcha": {
+        "/v1/captcha": {
             "get": {
                 "description": "获取验证码",
                 "consumes": [
@@ -47,7 +50,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/login": {
+        "/v1/login": {
             "post": {
                 "description": "获取token\nLoginHandler can be used by clients to get a jwt token.\nPayload needs to be json in the form of {\"username\": \"USERNAME\", \"password\": \"PASSWORD\"}.\nReply will be of the form {\"token\": \"TOKEN\"}.\ndev mode：It should be noted that all fields cannot be empty, and a value of 0 can be passed in addition to the account password\n注意：开发模式：需要注意全部字段不能为空，账号密码外可以传入0值",
                 "consumes": [
@@ -78,7 +81,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/logout": {
+        "/v1/logout": {
             "post": {
                 "security": [
                     {
@@ -103,7 +106,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/register": {
+        "/v1/register": {
             "post": {
                 "description": "用户注册接口",
                 "consumes": [
@@ -138,6 +141,36 @@ var doc = `{
                         "description": "Payment Required",
                         "schema": {
                             "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/role": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "tags": [
+                    "角色/Role"
+                ],
+                "summary": "获取Role数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "roleId",
+                        "name": "roleId",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -221,6 +254,13 @@ var doc = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
@@ -235,12 +275,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "",
-	Host:        "",
-	BasePath:    "",
+	Version:     "1.0",
+	Host:        "localhost:8000",
+	BasePath:    "/api",
 	Schemes:     []string{},
-	Title:       "",
-	Description: "",
+	Title:       "OS Example API",
+	Description: "This is a sample server celler server.",
 }
 
 type s struct{}

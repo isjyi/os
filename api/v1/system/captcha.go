@@ -13,7 +13,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Success 200 {string} string	"{"code": 200,"data": [...]}"
-// @Router /api/v1/captcha [get]
+// @Router /v1/captcha [get]
 func GenerateCaptchaHandler(c *gin.Context) {
 	id, b64s, err := captcha.DriverDigitFunc()
 	tools.HasError(err, "验证码获取失败", 500)

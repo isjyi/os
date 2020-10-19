@@ -1,3 +1,4 @@
+basePath: /api
 definitions:
   Login:
     properties:
@@ -55,10 +56,16 @@ definitions:
         description: 消息
         type: string
     type: object
+host: localhost:8000
 info:
-  contact: {}
+  contact:
+    email: zhangbiao19931203@gmail.com
+    name: OS API
+  description: This is a sample server celler server.
+  title: OS Example API
+  version: "1.0"
 paths:
-  /api/v1/captcha:
+  /v1/captcha:
     get:
       consumes:
       - application/json
@@ -73,7 +80,7 @@ paths:
       summary: 获取验证码
       tags:
       - Base
-  /api/v1/login:
+  /v1/login:
     post:
       consumes:
       - application/json
@@ -99,7 +106,7 @@ paths:
       summary: 登陆
       tags:
       - Base
-  /api/v1/logout:
+  /v1/logout:
     post:
       consumes:
       - application/json
@@ -114,7 +121,7 @@ paths:
       summary: 退出登录
       tags:
       - Base
-  /api/v1/register:
+  /v1/register:
     post:
       consumes:
       - application/json
@@ -140,4 +147,27 @@ paths:
       summary: 用户注册账号
       tags:
       - Base
+  /v1/role:
+    get:
+      description: 获取JSON
+      parameters:
+      - description: roleId
+        in: path
+        name: roleId
+        type: string
+      responses:
+        "200":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: 获取Role数据
+      tags:
+      - 角色/Role
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

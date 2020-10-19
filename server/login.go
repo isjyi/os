@@ -10,7 +10,7 @@ import (
 type Login struct {
 	Phone    string `json:"phone"  binding:"required,len=11,phone"`    // 手机号
 	Password string `json:"passwrod"  binding:"required,min=8,max=20"` // 密码
-	VCode    `json:""`
+	VCode
 } //@name Login
 
 // VCode user verification code

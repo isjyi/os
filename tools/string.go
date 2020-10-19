@@ -18,6 +18,10 @@ func StringToInt(e string) (int, error) {
 	return strconv.Atoi(e)
 }
 
+func StringToUInt64(e string) (uint64, error) {
+	return strconv.ParseUint(e, 0, 64)
+}
+
 func StringToBool(e string) (bool, error) {
 	return strconv.ParseBool(e)
 }

@@ -14,7 +14,7 @@ import (
 // @Param data body server.Register true "param"
 // @Success 200 {object} app.Response"
 // @Failure 402 {object} app.Response"
-// @Router /api/v1/register [post]
+// @Router /v1/register [post]
 func Register(c *gin.Context) {
 	var r server.Register
 	if err := c.ShouldBindJSON(&r); err != nil {
