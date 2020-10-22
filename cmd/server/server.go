@@ -86,7 +86,7 @@ func run() error {
 
 	r := router.InitRouter()
 
-	defer global.Eloquent.Close()
+	// defer global.Eloquent.Close()
 
 	utils.InitTrans("zh")
 

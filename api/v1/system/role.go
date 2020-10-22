@@ -10,7 +10,7 @@ import (
 
 // @Summary 获取Role数据
 // @Description 获取JSON
-// @Tags 角色/Role
+// @Tags Base
 // @Param roleId path string false "roleId"
 // @Success 200 {string} string "{"code": 200, "data": [...]}"
 // @Router /v1/role [get]

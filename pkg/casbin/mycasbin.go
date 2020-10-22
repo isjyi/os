@@ -5,7 +5,7 @@ import (
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
-	gormAdapter "github.com/casbin/gorm-adapter/v2"
+	gormAdapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/isjyi/os/global"
 )
 
@@ -25,7 +25,7 @@ m = r.sub == p.sub && (keyMatch2(r.obj, p.obj) || keyMatch(r.obj, p.obj)) && (r.
 `
 
 func Setup() {
-	Apter, err := gormAdapter.NewAdapterByDB(global.Eloquent)
+	Apter, err := gormAdapter.NewAdapterByDBUseTableName(global.Eloquent, "sys", "casbin")
 	if err != nil {
 		panic(err)
 	}

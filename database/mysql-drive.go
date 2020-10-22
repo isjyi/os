@@ -1,15 +1,15 @@
 package database
 
 import (
-	"fmt"
-	"time"
+	"database/sql"
 
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/tools"
 	"github.com/isjyi/os/tools/config"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"go.uber.org/zap"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 type Mysql struct {
@@ -17,7 +17,18 @@ type Mysql struct {
 
 func (m *Mysql) Setup() {
 	var err error
-	global.Eloquent, err = m.Open()
+	db, err := sql.Open("mysql", m.GetConnect())
+
+	if err != nil {
+		global.Logger.Fatal(tools.Red(m.GetDriver()+" connect error :"), zap.Error(err))
+	}
+
+	global.Eloquent, err = m.Open(db, &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "sys_",
+			SingularTable: true,
+		},
+	})
 	if err != nil {
 		global.Logger.Fatal(tools.Red(m.GetDriver()+" connect error :"), zap.Error(err))
 	} else {
@@ -31,16 +42,16 @@ func (m *Mysql) Setup() {
 	// 	return "os_" + defaultTableName
 	// }
 
-	global.Eloquent.LogMode(config.OSConfig.Logger.EnabledDB)
+	// global.Eloquent.LogMode(config.OSConfig.Logger.EnabledDB)
 
-	global.Eloquent.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
-	global.Eloquent.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	global.Eloquent.Callback().Delete().Replace("gorm:delete", deleteCallback)
+	// global.Eloquent.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	// global.Eloquent.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	// global.Eloquent.Callback().Delete().Replace("gorm:delete", deleteCallback)
 }
 
 // 打开数据库连接
-func (m *Mysql) Open() (db *gorm.DB, err error) {
-	return gorm.Open(m.GetDriver(), m.GetConnect())
+func (m *Mysql) Open(db *sql.DB, cfg *gorm.Config) (*gorm.DB, error) {
+	return gorm.Open(mysql.New(mysql.Config{Conn: db}), cfg)
 }
 
 // 获取数据库连接
@@ -52,62 +63,62 @@ func (m *Mysql) GetDriver() string {
 	return config.OSConfig.Database.Driver
 }
 
-func updateTimeStampForCreateCallback(scope *gorm.Scope) {
-	if !scope.HasError() {
-		nowTime := time.Now().Unix()
+// func updateTimeStampForCreateCallback(scope *gorm.Scope) {
+// 	if !scope.HasError() {
+// 		nowTime := time.Now().Unix()
 
-		if createdAtField, ok := scope.FieldByName("CreatedAt"); ok {
-			if createdAtField.IsBlank {
-				createdAtField.Set(nowTime)
-			}
-		}
+// 		if createdAtField, ok := scope.FieldByName("CreatedAt"); ok {
+// 			if createdAtField.IsBlank {
+// 				createdAtField.Set(nowTime)
+// 			}
+// 		}
 
-		if updatedAtField, ok := scope.FieldByName("UpdatedAt"); ok {
-			if updatedAtField.IsBlank {
-				updatedAtField.Set(nowTime)
-			}
-		}
-	}
-}
+// 		if updatedAtField, ok := scope.FieldByName("UpdatedAt"); ok {
+// 			if updatedAtField.IsBlank {
+// 				updatedAtField.Set(nowTime)
+// 			}
+// 		}
+// 	}
+// }
 
-func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
-	if _, ok := scope.Get("gorm:update_column"); !ok {
-		scope.SetColumn("UpdatedTime", time.Now().Unix())
-	}
-}
+// func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
+// 	if _, ok := scope.Get("gorm:update_column"); !ok {
+// 		scope.SetColumn("UpdatedTime", time.Now().Unix())
+// 	}
+// }
 
-func deleteCallback(scope *gorm.Scope) {
-	if !scope.HasError() {
-		var extraOption string
-		if str, ok := scope.Get("gorm:delete_option"); ok {
-			extraOption = fmt.Sprint(str)
-		}
+// func deleteCallback(scope *gorm.Scope) {
+// 	if !scope.HasError() {
+// 		var extraOption string
+// 		if str, ok := scope.Get("gorm:delete_option"); ok {
+// 			extraOption = fmt.Sprint(str)
+// 		}
 
-		deletedOnField, hasDeletedOnField := scope.FieldByName("DeletedTime")
+// 		deletedOnField, hasDeletedOnField := scope.FieldByName("DeletedTime")
 
-		if !scope.Search.Unscoped && hasDeletedOnField {
-			scope.Raw(fmt.Sprintf(
-				"UPDATE %v SET %v=%v%v%v",
-				scope.QuotedTableName(),
-				scope.Quote(deletedOnField.DBName),
-				scope.AddToVars(time.Now().Unix()),
-				addExtraSpaceIfExist(scope.CombinedConditionSql()),
-				addExtraSpaceIfExist(extraOption),
-			)).Exec()
-		} else {
-			scope.Raw(fmt.Sprintf(
-				"DELETE FROM %v%v%v",
-				scope.QuotedTableName(),
-				addExtraSpaceIfExist(scope.CombinedConditionSql()),
-				addExtraSpaceIfExist(extraOption),
-			)).Exec()
-		}
-	}
-}
+// 		if !scope.Search.Unscoped && hasDeletedOnField {
+// 			scope.Raw(fmt.Sprintf(
+// 				"UPDATE %v SET %v=%v%v%v",
+// 				scope.QuotedTableName(),
+// 				scope.Quote(deletedOnField.DBName),
+// 				scope.AddToVars(time.Now().Unix()),
+// 				addExtraSpaceIfExist(scope.CombinedConditionSql()),
+// 				addExtraSpaceIfExist(extraOption),
+// 			)).Exec()
+// 		} else {
+// 			scope.Raw(fmt.Sprintf(
+// 				"DELETE FROM %v%v%v",
+// 				scope.QuotedTableName(),
+// 				addExtraSpaceIfExist(scope.CombinedConditionSql()),
+// 				addExtraSpaceIfExist(extraOption),
+// 			)).Exec()
+// 		}
+// 	}
+// }
 
-func addExtraSpaceIfExist(str string) string {
-	if str != "" {
-		return " " + str
-	}
-	return ""
-}
+// func addExtraSpaceIfExist(str string) string {
+// 	if str != "" {
+// 		return " " + str
+// 	}
+// 	return ""
+// }

@@ -8,8 +8,8 @@ import (
 	"github.com/isjyi/os/pkg/jwt"
 	"github.com/isjyi/os/tools"
 	"github.com/isjyi/os/tools/config"
-	"github.com/jinzhu/gorm"
 	"github.com/mojocn/base64Captcha"
+	"gorm.io/gorm"
 )
 
 // Register user register struct

@@ -3,8 +3,8 @@ package global
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/garyburd/redigo/redis"
-	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 var (

@@ -2,22 +2,21 @@ package migrate
 
 import (
 	"github.com/isjyi/os/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func AutoMigrate(db *gorm.DB) error {
-	db.SingularTable(true)
-	err := db.AutoMigrate(&models.SysUser{}).Error
+	err := db.AutoMigrate(&models.SysUser{})
 	if err != nil {
 		return err
 	}
 
-	err = db.AutoMigrate(&models.SysRole{}).Error
+	err = db.AutoMigrate(&models.SysRole{})
 	if err != nil {
 		return err
 	}
 
-	err = db.AutoMigrate(&models.CasbinRule{}).Error
+	err = db.AutoMigrate(&models.CasbinRule{})
 	if err != nil {
 		return err
 	}
@@ -27,6 +26,5 @@ func AutoMigrate(db *gorm.DB) error {
 }
 
 func CustomMigrate(db *gorm.DB, table interface{}) error {
-	db.SingularTable(true)
-	return db.AutoMigrate(&table).Error
+	return db.AutoMigrate(&table)
 }
