@@ -60,7 +60,7 @@ type GinJWTMiddleware struct {
 	PayloadFunc func(data interface{}) MapClaims
 
 	// User can define own Unauthorized func.
-	Unauthorized func(*gin.Context, int, string)
+	Unauthorized func(*gin.Context, int, error)
 
 	// User can define own LoginResponse func.
 	LoginResponse func(*gin.Context, int, string, time.Time)
@@ -299,10 +299,10 @@ func (mw *GinJWTMiddleware) MiddlewareInit() error {
 	}
 
 	if mw.Unauthorized == nil {
-		mw.Unauthorized = func(c *gin.Context, code int, message string) {
+		mw.Unauthorized = func(c *gin.Context, code int, err error) {
 			c.JSON(code, gin.H{
 				"code":    code,
-				"message": message,
+				"message": err.Error(),
 			})
 		}
 	}
@@ -384,22 +384,22 @@ func (mw *GinJWTMiddleware) MiddlewareFunc() gin.HandlerFunc {
 func (mw *GinJWTMiddleware) middlewareImpl(c *gin.Context) {
 	claims, err := mw.GetClaimsFromJWT(c)
 	if err != nil {
-		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(err, c))
+		mw.unauthorized(c, http.StatusUnauthorized, err)
 		return
 	}
 
 	if claims["exp"] == nil {
-		mw.unauthorized(c, http.StatusBadRequest, mw.HTTPStatusMessageFunc(ErrMissingExpField, c))
+		mw.unauthorized(c, http.StatusBadRequest, ErrMissingExpField)
 		return
 	}
 
 	if _, ok := claims["exp"].(float64); !ok {
-		mw.unauthorized(c, http.StatusBadRequest, mw.HTTPStatusMessageFunc(ErrWrongFormatOfExp, c))
+		mw.unauthorized(c, http.StatusBadRequest, ErrWrongFormatOfExp)
 		return
 	}
 
 	if int64(claims["exp"].(float64)) < mw.TimeFunc().Unix() {
-		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(ErrExpiredToken, c))
+		mw.unauthorized(c, http.StatusUnauthorized, ErrExpiredToken)
 		return
 	}
 
@@ -411,7 +411,7 @@ func (mw *GinJWTMiddleware) middlewareImpl(c *gin.Context) {
 	}
 
 	if !mw.Authorizator(identity, c) {
-		mw.unauthorized(c, http.StatusForbidden, mw.HTTPStatusMessageFunc(ErrForbidden, c))
+		mw.unauthorized(c, http.StatusForbidden, ErrForbidden)
 		return
 	}
 
@@ -445,14 +445,14 @@ func (mw *GinJWTMiddleware) GetClaimsFromJWT(c *gin.Context) (MapClaims, error) 
 // Reply will be of the form {"token": "TOKEN"}.
 func (mw *GinJWTMiddleware) LoginHandler(c *gin.Context) {
 	if mw.Authenticator == nil {
-		mw.unauthorized(c, http.StatusInternalServerError, mw.HTTPStatusMessageFunc(ErrMissingAuthenticatorFunc, c))
+		mw.unauthorized(c, http.StatusInternalServerError, ErrMissingAuthenticatorFunc)
 		return
 	}
 
 	data, err := mw.Authenticator(c)
 
 	if err != nil {
-		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(err, c))
+		mw.unauthorized(c, http.StatusUnauthorized, err)
 		return
 	}
 
@@ -472,7 +472,7 @@ func (mw *GinJWTMiddleware) LoginHandler(c *gin.Context) {
 	tokenString, err := mw.signedString(token)
 
 	if err != nil {
-		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(ErrFailedTokenCreation, c))
+		mw.unauthorized(c, http.StatusUnauthorized, ErrFailedTokenCreation)
 		return
 	}
 
@@ -538,7 +538,7 @@ func (mw *GinJWTMiddleware) signedString(token *jwt.Token) (string, error) {
 func (mw *GinJWTMiddleware) RefreshHandler(c *gin.Context) {
 	tokenString, expire, err := mw.RefreshToken(c)
 	if err != nil {
-		mw.unauthorized(c, http.StatusUnauthorized, mw.HTTPStatusMessageFunc(err, c))
+		mw.unauthorized(c, http.StatusUnauthorized, err)
 		return
 	}
 
@@ -744,13 +744,13 @@ func (mw *GinJWTMiddleware) ParseTokenString(token string) (*jwt.Token, error) {
 	})
 }
 
-func (mw *GinJWTMiddleware) unauthorized(c *gin.Context, code int, message string) {
+func (mw *GinJWTMiddleware) unauthorized(c *gin.Context, code int, err error) {
 	c.Header("WWW-Authenticate", "JWT realm="+mw.Realm)
 	if !mw.DisabledAbort {
 		c.Abort()
 	}
 
-	mw.Unauthorized(c, code, message)
+	mw.Unauthorized(c, code, err)
 }
 
 // ExtractClaims help to extract the JWT claims

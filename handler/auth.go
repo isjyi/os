@@ -1,16 +1,17 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/models"
 	"github.com/isjyi/os/pkg/jwt"
 	"github.com/isjyi/os/server"
 	"github.com/isjyi/os/tools/config"
+	"github.com/isjyi/os/utils"
 	"github.com/mojocn/base64Captcha"
 )
 
@@ -55,8 +56,7 @@ func Authenticator(c *gin.Context) (interface{}, error) {
 	var loginVals server.Login
 
 	if err := c.ShouldBindJSON(&loginVals); err != nil {
-		fmt.Println(err.Error())
-		return nil, jwt.ErrMissingLoginValues
+		return nil, err
 	}
 	if config.OSConfig.Application.Mode != "dev" {
 		if !store.Verify(loginVals.UUID, loginVals.Code, true) {
@@ -101,9 +101,19 @@ func Authorizator(data interface{}, c *gin.Context) bool {
 	return false
 }
 
-func Unauthorized(c *gin.Context, code int, message string) {
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  message,
-	})
+func Unauthorized(c *gin.Context, code int, err error) {
+	errs, ok := err.(validator.ValidationErrors)
+	if !ok {
+		c.JSON(code, gin.H{
+			"code": code,
+			"msg":  err.Error(),
+		})
+	} else {
+		c.JSON(code, gin.H{
+			"code": code,
+			"msg":  "数据验证非法",
+			"data": utils.T(errs),
+		})
+	}
+
 }

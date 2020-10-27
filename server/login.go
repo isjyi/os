@@ -9,7 +9,7 @@ import (
 // Login user login struct
 type Login struct {
 	Phone    string `json:"phone"  binding:"required,len=11,phone"`    // 手机号
-	Password string `json:"passwrod"  binding:"required,min=8,max=20"` // 密码
+	Password string `json:"password"  binding:"required,min=8,max=20"` // 密码
 	VCode
 } //@name Login
 

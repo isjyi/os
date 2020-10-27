@@ -1,5 +1,7 @@
 package models
 
+import "github.com/isjyi/os/global"
+
 type SysSetting struct {
 	ID   int    `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
 	Name string `json:"name" gorm:"type:varchar(256);"`
@@ -9,4 +11,10 @@ type SysSetting struct {
 
 func (SysSetting) TableName() string {
 	return "sys_setting"
+}
+
+func (s *SysSetting) Get() (r SysSetting, e error) {
+	res := global.Eloquent.Take(&r)
+	e = res.Error
+	return
 }

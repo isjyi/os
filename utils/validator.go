@@ -131,7 +131,7 @@ func translate(trans ut.Translator, fe validator.FieldError) string {
 func removeTopStruct(fields map[string]string) map[string]string {
 	res := map[string]string{}
 	for field, err := range fields {
-		res[field[strings.LastIndex(field, ".")+1:]] = err
+		res[field[strings.LastIndex(field, ".")+1:]] = err[strings.LastIndexAny(err, field[strings.LastIndex(field, ".")+1:])+1:]
 	}
 	return res
 }

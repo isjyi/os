@@ -58,6 +58,7 @@ func sysNoCheckRoleRouter(r *gin.RouterGroup) {
 	v1 := r.Group("/api/v1")
 	v1.POST("/register", system.Register)
 	v1.GET("/captcha", system.GenerateCaptchaHandler)
+	registerSysSettingRouter(v1)
 }
 
 func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
@@ -72,5 +73,12 @@ func registerBaseRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddlewar
 	{
 		v1auth.POST("/logout", handler.Logout)
 		v1auth.GET("/role", system.GetRole)
+	}
+}
+
+func registerSysSettingRouter(v1 *gin.RouterGroup) {
+	setting := v1.Group("/setting")
+	{
+		setting.GET("", system.GetSetting)
 	}
 }
