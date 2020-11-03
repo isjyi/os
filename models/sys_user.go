@@ -7,7 +7,7 @@ type SysUser struct {
 	NickName  string `json:"nickName" gorm:"size:20;default:'jerry';comment:'用户昵称'" `                                    // 昵称
 	HeaderImg string `json:"headerImg" gorm:"size:128;default:'http://qmplusimg.henrongyi.top/head.png';comment:'用户头像'"` //头像
 	RoleId    uint64 `gorm:"comment:'角色id';index" json:"role_id"`                                                        // 角色id
-	LogindAt  int    `json:"-" gorm:"default:null"`                                                                      // 登录时间
+	LogindAt  int32  `json:"-" gorm:"default:null"`                                                                      // 登录时间
 	BaseModel
 }
 

@@ -1,7 +1,7 @@
 package models
 
 type BaseModel struct {
-	CreatedAt int `json:"createdAt"`
-	UpdatedAt int `json:"updatedAt"`
-	DeletedAt int `json:"deletedAt" gorm:"default:null" sql:"index"`
+	CreatedAt int32 `json:"createdAt"`
+	UpdatedAt int32 `json:"updatedAt"`
+	DeletedAt int32 `json:"deletedAt" gorm:"default:null" sql:"index"`
 }
