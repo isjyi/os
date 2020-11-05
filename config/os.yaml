@@ -28,7 +28,7 @@ application:
   # 服务名称
   name: testApp
   # 服务端口号
-  port: 8000
+  port: 8001
   # 读超时
   read-timeout: 1
   # 写超时

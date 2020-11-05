@@ -50,7 +50,7 @@ func sysStaticFileRouter(r *gin.RouterGroup) {
 }
 
 func sysSwaggerRouter(r *gin.RouterGroup) {
-	url := ginSwagger.URL("http://localhost:8000/static/docs/swagger.json")
+	url := ginSwagger.URL("http://localhost:8001/static/docs/swagger.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }
 
@@ -71,6 +71,7 @@ func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddle
 func registerBaseRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 	v1auth := v1.Group("").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
 	{
+		v1auth.GET("/info", system.Info)
 		v1auth.POST("/logout", handler.Logout)
 		v1auth.GET("/role", system.GetRole)
 	}

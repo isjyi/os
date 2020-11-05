@@ -8,9 +8,6 @@ type SysRole struct {
 	CreateBy uint64 `json:"create_by" gorm:"comment:'创建者'"` // 创建者
 	UpdateBy uint64 `json:"update_by" gorm:"comment:'修改者'"` // 修改者
 	Remark   string `json:"remark" gorm:"comment:'备注'"`     //备注
-	Params   string `json:"params" gorm:"-"`
-	MenuIds  []int  `json:"menu_ids" gorm:"-"`
-	DeptIds  []int  `json:"dept_ids" gorm:"-"`
 	BaseModel
 }
 

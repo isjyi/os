@@ -2,3 +2,11 @@
 2020-10-17T14:15:09.901+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
 2020-10-17T14:50:21.002+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
 2020-10-30T11:38:44.480+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	crypto/bcrypt: hashedPassword is not the hash of the given password
+2020-11-04T13:47:52.351+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-04T13:48:01.058+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-04T13:48:01.980+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-04T13:48:35.307+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-04T13:48:50.282+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-04T13:48:55.067+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-04T13:48:56.099+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found
+2020-11-05T13:49:01.422+0800	ERROR	D:/work/src/github.com/isjyi/os/handler/auth.go:70	record not found

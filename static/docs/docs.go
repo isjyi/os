@@ -27,6 +27,23 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/setting": {
+            "get": {
+                "description": "获取JSON",
+                "tags": [
+                    "系统信息"
+                ],
+                "summary": "查询系统信息",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": -1, \"message\": \"添加失败\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/captcha": {
             "get": {
                 "description": "获取验证码",
@@ -43,6 +60,28 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": "{\"code\": 200,\"data\": [...]}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/info": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取用户信息",
+                "tags": [
+                    "Base"
+                ],
+                "summary": "获取用户信息",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
                         "schema": {
                             "type": "string"
                         }
@@ -155,7 +194,7 @@ var doc = `{
                 ],
                 "description": "获取JSON",
                 "tags": [
-                    "角色/Role"
+                    "Base"
                 ],
                 "summary": "获取Role数据",
                 "parameters": [
@@ -182,7 +221,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "code",
-                "passwrod",
+                "password",
                 "phone",
                 "uuid"
             ],
@@ -191,7 +230,7 @@ var doc = `{
                     "description": "验证码",
                     "type": "string"
                 },
-                "passwrod": {
+                "password": {
                     "description": "密码",
                     "type": "string"
                 },

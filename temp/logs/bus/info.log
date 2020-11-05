@@ -262,3 +262,41 @@
 2020-11-02T16:17:35.270+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
 2020-11-02T16:18:11.188+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
 2020-11-02T16:20:13.642+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-04T13:36:01.503+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-04T13:47:15.867+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-04T13:47:15.881+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-04T13:47:15.904+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-04T13:58:23.222+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-04T13:58:23.240+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-04T13:58:23.259+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-04T18:20:03.789+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-04T18:20:03.803+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-04T18:20:03.820+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T13:47:39.271+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T13:47:39.293+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T13:47:39.313+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T16:16:38.311+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:17:51.264+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:17:51.286+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T16:17:51.307+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T16:18:46.347+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:18:46.364+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T16:18:46.380+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T16:21:33.744+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:21:33.762+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T16:21:33.781+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T16:23:06.442+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:23:06.468+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T16:23:06.504+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T16:35:31.032+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:35:31.152+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T16:35:31.343+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T16:37:04.600+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T16:37:04.625+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T16:37:04.645+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T17:50:59.421+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T17:50:59.440+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T17:50:59.470+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
+2020-11-05T17:52:12.201+0800	INFO	D:/work/src/github.com/isjyi/os/database/mysql-drive.go:39	[0;0;32mmysql connect success ![0m
+2020-11-05T17:52:12.217+0800	INFO	D:/work/src/github.com/isjyi/os/pkg/redis/redis.go:49	[0;0;32mredis connect success ![0m
+2020-11-05T17:52:12.236+0800	INFO	D:/work/src/github.com/isjyi/os/cmd/server/server.go:77	starting api server
