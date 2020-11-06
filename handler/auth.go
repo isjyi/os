@@ -104,7 +104,7 @@ func Authorizator(data interface{}, c *gin.Context) bool {
 func Unauthorized(c *gin.Context, code int, err error) {
 	errs, ok := err.(validator.ValidationErrors)
 	if !ok {
-		c.JSON(code, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"code": code,
 			"msg":  err.Error(),
 		})

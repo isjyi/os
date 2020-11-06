@@ -9,7 +9,7 @@ const INDEX = `
 <html>
 <head>
 <meta charset="utf-8">
-<title>GO-ADMIN欢迎您</title>
+<title>OS-ADMIN欢迎您</title>
 <style>
 body{
   margin:0; 

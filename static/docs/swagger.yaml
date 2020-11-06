@@ -1,5 +1,30 @@
 basePath: /api
 definitions:
+  InfoResponse:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      name:
+        description: 昵称
+        type: string
+      permissions:
+        description: 角色权限
+        items:
+          type: string
+        type: array
+      roles:
+        description: 角色名称
+        items:
+          type: string
+        type: array
+      userId:
+        description: id
+        type: integer
+      userName:
+        description: 手机号
+        type: string
+    type: object
   Login:
     properties:
       code:
@@ -43,7 +68,7 @@ definitions:
     - phone
     - uuid
     type: object
-  app.Response:
+  Response:
     properties:
       code:
         description: 代码
@@ -56,6 +81,73 @@ definitions:
         description: 消息
         type: string
     type: object
+  models.Menu:
+    properties:
+      action:
+        description: 请求方式
+        type: string
+      children:
+        items:
+          $ref: '#/definitions/models.Menu'
+        type: array
+      component:
+        description: 组件路径
+        type: string
+      create_by:
+        description: 创建者
+        type: string
+      createdAt:
+        type: integer
+      deletedAt:
+        type: integer
+      icon:
+        description: 菜单图标
+        type: string
+      id:
+        description: id
+        type: integer
+      is_frame:
+        description: 是否外链
+        type: boolean
+      menu_type:
+        description: 菜单类型
+        type: integer
+      name:
+        description: 菜单名称
+        type: string
+      no_cache:
+        description: 缓存
+        type: boolean
+      parent_id:
+        description: 菜单父级id
+        type: integer
+      path:
+        description: 路由地址
+        type: string
+      paths:
+        description: 层级顺序
+        type: string
+      permission:
+        description: 页面权限标识
+        type: string
+      permission_id:
+        description: 菜单对应权限id
+        type: integer
+      sort:
+        description: 排序
+        type: integer
+      title:
+        description: 菜单标题
+        type: string
+      update_by:
+        description: 修改者
+        type: string
+      updatedAt:
+        type: integer
+      visible:
+        description: 菜单状态
+        type: boolean
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -65,6 +157,32 @@ info:
   title: OS Example API
   version: "1.0"
 paths:
+  /api/v1/menurole:
+    get:
+      description: 获取JSON
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Menu'
+                  type: array
+              type: object
+      security:
+      - Bearer: []
+      summary: 根据角色名称获取菜单列表数据（左菜单使用）
+      tags:
+      - 菜单
   /api/v1/setting:
     get:
       description: 获取JSON
@@ -96,9 +214,14 @@ paths:
       description: 获取用户信息
       responses:
         "200":
-          description: '{"code": 200, "data": [...]}'
+          description: OK
           schema:
-            type: string
+            allOf:
+            - $ref: '#/definitions/Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/InfoResponse'
+              type: object
       security:
       - Bearer: []
       summary: 获取用户信息
@@ -163,11 +286,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/Response'
         "402":
           description: Payment Required
           schema:
-            $ref: '#/definitions/app.Response'
+            $ref: '#/definitions/Response'
       summary: 用户注册账号
       tags:
       - Base

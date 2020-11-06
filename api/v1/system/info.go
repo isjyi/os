@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/models"
+	"github.com/isjyi/os/response"
 	"github.com/isjyi/os/tools"
 	"github.com/isjyi/os/tools/app"
 )
@@ -11,7 +12,7 @@ import (
 // @Summary 获取用户信息
 // @Description 获取用户信息
 // @Tags Base
-// @Success 200 {string} string "{"code": 200, "data": [...]}"
+// @Success 200 {object} app.Response{data=response.InfoResponse}
 // @Router /v1/info [get]
 // @Security Bearer
 func Info(c *gin.Context) {
@@ -21,26 +22,24 @@ func Info(c *gin.Context) {
 		tools.HasError(err, "", 500)
 	}
 
-	var mp = make(map[string]interface{})
+	var res = response.InfoResponse{
+		UserName: user.Phone,
+		UserID:   user.ID,
+		Name:     user.NickName,
+		Roles:    []string{user.Role.RoleName},
+	}
 
-	mp["roles"] = []string{user.Role.RoleName}
-
-	if user.Role.RoleName == "系统管理员" {
-		mp["permissions"] = []string{"*:*:*"}
+	if user.Role.RoleName == "管理员" {
+		res.Permissions = []string{"*:*:*"}
 	} else {
 		RoleMenu := models.SysRoleMenu{RoleId: user.RoleId}
 		list, _ := RoleMenu.GetPermits()
-		mp["permissions"] = list
+		res.Permissions = list
 	}
 
-	mp["introduction"] = " am a super administrator"
-
-	mp["avatar"] = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+	res.Aatar = "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
 	if user.Avatar != "" {
-		mp["avatar"] = user.Avatar
+		res.Aatar = user.Avatar
 	}
-	mp["userName"] = user.Phone
-	mp["userId"] = user.ID
-	mp["name"] = user.NickName
-	app.OK(c, mp, "")
+	app.OK(c, res, "")
 }

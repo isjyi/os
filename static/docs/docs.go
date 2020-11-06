@@ -27,6 +27,52 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/menurole": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "tags": [
+                    "菜单"
+                ],
+                "summary": "根据角色名称获取菜单列表数据（左菜单使用）",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Menu"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/setting": {
             "get": {
                 "description": "获取JSON",
@@ -81,9 +127,21 @@ var doc = `{
                 "summary": "获取用户信息",
                 "responses": {
                     "200": {
-                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/InfoResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -173,13 +231,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/Response"
                         }
                     },
                     "402": {
                         "description": "Payment Required",
                         "schema": {
-                            "$ref": "#/definitions/app.Response"
+                            "$ref": "#/definitions/Response"
                         }
                     }
                 }
@@ -217,6 +275,41 @@ var doc = `{
         }
     },
     "definitions": {
+        "InfoResponse": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "permissions": {
+                    "description": "角色权限",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roles": {
+                    "description": "角色名称",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "userName": {
+                    "description": "手机号",
+                    "type": "string"
+                }
+            }
+        },
         "Login": {
             "type": "object",
             "required": [
@@ -275,7 +368,7 @@ var doc = `{
                 }
             }
         },
-        "app.Response": {
+        "Response": {
             "type": "object",
             "properties": {
                 "code": {
@@ -290,6 +383,98 @@ var doc = `{
                 "msg": {
                     "description": "消息",
                     "type": "string"
+                }
+            }
+        },
+        "models.Menu": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "请求方式",
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Menu"
+                    }
+                },
+                "component": {
+                    "description": "组件路径",
+                    "type": "string"
+                },
+                "create_by": {
+                    "description": "创建者",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "integer"
+                },
+                "deletedAt": {
+                    "type": "integer"
+                },
+                "icon": {
+                    "description": "菜单图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "is_frame": {
+                    "description": "是否外链",
+                    "type": "boolean"
+                },
+                "menu_type": {
+                    "description": "菜单类型",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "no_cache": {
+                    "description": "缓存",
+                    "type": "boolean"
+                },
+                "parent_id": {
+                    "description": "菜单父级id",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "路由地址",
+                    "type": "string"
+                },
+                "paths": {
+                    "description": "层级顺序",
+                    "type": "string"
+                },
+                "permission": {
+                    "description": "页面权限标识",
+                    "type": "string"
+                },
+                "permission_id": {
+                    "description": "菜单对应权限id",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "菜单标题",
+                    "type": "string"
+                },
+                "update_by": {
+                    "description": "修改者",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "integer"
+                },
+                "visible": {
+                    "description": "菜单状态",
+                    "type": "boolean"
                 }
             }
         }

@@ -16,7 +16,7 @@ func AutoMigrate(db *gorm.DB) error {
 		return err
 	}
 
-	err = db.AutoMigrate(&models.CasbinRule{})
+	err = db.AutoMigrate(&models.Casbin{})
 	if err != nil {
 		return err
 	}

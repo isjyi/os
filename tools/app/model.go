@@ -7,14 +7,14 @@ type Response struct {
 	Data interface{} `json:"data"`
 	// 消息
 	Msg string `json:"msg"`
-}
+} //@name Response
 
 type Page struct {
 	List      interface{} `json:"list"`
 	Count     int         `json:"count"`
 	PageIndex int         `json:"pageIndex"`
 	PageSize  int         `json:"pageSize"`
-}
+} //@name Page
 
 type PageResponse struct {
 	// 代码
@@ -23,7 +23,7 @@ type PageResponse struct {
 	Data Page `json:"data"`
 	// 消息
 	Msg string `json:"msg"`
-}
+} //@name PageResponse
 
 func (res *Response) ReturnOK() *Response {
 	res.Code = 200

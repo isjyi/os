@@ -8,4 +8,5 @@ var (
 	GetSuccess     = "查询成功！"
 	NotFound       = "未找到相关内容或者数据为空！"
 	TimeOut        = "操作超时！"
+	UserFound      = "用户不存在或已注销！"
 )
