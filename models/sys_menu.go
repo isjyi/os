@@ -23,7 +23,7 @@ type Menu struct {
 	IsFrame      uint8  `json:"is_frame" gorm:"default:0;comment:是否外链;"`      // 是否外链
 	Children     []Menu `json:"children" gorm:"-"`
 	BaseModel
-}
+} //@name Menu
 
 func (Menu) TableName() string {
 	return "sys_menu"

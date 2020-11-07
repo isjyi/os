@@ -11,7 +11,7 @@ import (
 
 // @Summary 获取用户信息
 // @Description 获取用户信息
-// @Tags Base
+// @Tags 系统
 // @Success 200 {object} app.Response{data=response.InfoResponse}
 // @Router /v1/info [get]
 // @Security Bearer

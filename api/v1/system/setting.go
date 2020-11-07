@@ -9,7 +9,7 @@ import (
 
 // @Summary 查询系统信息
 // @Description 获取JSON
-// @Tags 系统信息
+// @Tags 系统
 // @Success 200 {string} string	"{"code": 200, "message": "添加成功"}"
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
 // @Router /api/v1/setting [get]

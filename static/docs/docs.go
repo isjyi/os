@@ -27,6 +27,52 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/dict/databytype/{type_id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "tags": [
+                    "字典数据"
+                ],
+                "summary": "通过字典类型id获取字典数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "type_id",
+                        "name": "type_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/DictData"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/menurole": {
             "get": {
                 "security": [
@@ -38,7 +84,7 @@ var doc = `{
                 "tags": [
                     "菜单"
                 ],
-                "summary": "根据角色名称获取菜单列表数据（左菜单使用）",
+                "summary": "根据角色名称获取菜单列表数据（侧边栏使用）",
                 "parameters": [
                     {
                         "type": "integer",
@@ -62,12 +108,18 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Menu"
+                                                "$ref": "#/definitions/Menu"
                                             }
                                         }
                                     }
                                 }
                             ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
                         }
                     }
                 }
@@ -77,7 +129,7 @@ var doc = `{
             "get": {
                 "description": "获取JSON",
                 "tags": [
-                    "系统信息"
+                    "系统"
                 ],
                 "summary": "查询系统信息",
                 "responses": {
@@ -100,7 +152,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Base"
+                    "系统"
                 ],
                 "summary": "获取验证码",
                 "responses": {
@@ -122,7 +174,7 @@ var doc = `{
                 ],
                 "description": "获取用户信息",
                 "tags": [
-                    "Base"
+                    "系统"
                 ],
                 "summary": "获取用户信息",
                 "responses": {
@@ -154,7 +206,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Base"
+                    "系统"
                 ],
                 "summary": "登陆",
                 "parameters": [
@@ -190,7 +242,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Base"
+                    "系统"
                 ],
                 "summary": "退出登录",
                 "responses": {
@@ -213,7 +265,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Base"
+                    "系统"
                 ],
                 "summary": "用户注册账号",
                 "parameters": [
@@ -252,7 +304,7 @@ var doc = `{
                 ],
                 "description": "获取JSON",
                 "tags": [
-                    "Base"
+                    "系统"
                 ],
                 "summary": "获取Role数据",
                 "parameters": [
@@ -275,6 +327,65 @@ var doc = `{
         }
     },
     "definitions": {
+        "DictData": {
+            "type": "object",
+            "properties": {
+                "create_by": {
+                    "description": "创建者",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "integer"
+                },
+                "dataScope": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "integer"
+                },
+                "dict_type_id": {
+                    "description": "字典类型",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_default": {
+                    "description": "默认",
+                    "type": "integer"
+                },
+                "label": {
+                    "description": "数据标签",
+                    "type": "string"
+                },
+                "params": {
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "显示顺序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                },
+                "update_by": {
+                    "description": "更新者",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "integer"
+                },
+                "value": {
+                    "description": "数据键值",
+                    "type": "integer"
+                }
+            }
+        },
         "InfoResponse": {
             "type": "object",
             "properties": {
@@ -337,6 +448,98 @@ var doc = `{
                 }
             }
         },
+        "Menu": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "description": "请求方式",
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Menu"
+                    }
+                },
+                "component": {
+                    "description": "组件路径",
+                    "type": "string"
+                },
+                "create_by": {
+                    "description": "创建者",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "integer"
+                },
+                "deletedAt": {
+                    "type": "integer"
+                },
+                "icon": {
+                    "description": "菜单图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "is_frame": {
+                    "description": "是否外链",
+                    "type": "integer"
+                },
+                "menu_type": {
+                    "description": "菜单类型",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "no_cache": {
+                    "description": "缓存",
+                    "type": "integer"
+                },
+                "parent_id": {
+                    "description": "菜单父级id",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "路由地址",
+                    "type": "string"
+                },
+                "paths": {
+                    "description": "层级顺序",
+                    "type": "string"
+                },
+                "permission": {
+                    "description": "页面权限标识",
+                    "type": "string"
+                },
+                "permission_id": {
+                    "description": "菜单对应权限id",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "菜单标题",
+                    "type": "string"
+                },
+                "update_by": {
+                    "description": "修改者",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "integer"
+                },
+                "visible": {
+                    "description": "菜单状态",
+                    "type": "integer"
+                }
+            }
+        },
         "Register": {
             "type": "object",
             "required": [
@@ -383,98 +586,6 @@ var doc = `{
                 "msg": {
                     "description": "消息",
                     "type": "string"
-                }
-            }
-        },
-        "models.Menu": {
-            "type": "object",
-            "properties": {
-                "action": {
-                    "description": "请求方式",
-                    "type": "string"
-                },
-                "children": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Menu"
-                    }
-                },
-                "component": {
-                    "description": "组件路径",
-                    "type": "string"
-                },
-                "create_by": {
-                    "description": "创建者",
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "integer"
-                },
-                "deletedAt": {
-                    "type": "integer"
-                },
-                "icon": {
-                    "description": "菜单图标",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "integer"
-                },
-                "is_frame": {
-                    "description": "是否外链",
-                    "type": "boolean"
-                },
-                "menu_type": {
-                    "description": "菜单类型",
-                    "type": "integer"
-                },
-                "name": {
-                    "description": "菜单名称",
-                    "type": "string"
-                },
-                "no_cache": {
-                    "description": "缓存",
-                    "type": "boolean"
-                },
-                "parent_id": {
-                    "description": "菜单父级id",
-                    "type": "integer"
-                },
-                "path": {
-                    "description": "路由地址",
-                    "type": "string"
-                },
-                "paths": {
-                    "description": "层级顺序",
-                    "type": "string"
-                },
-                "permission": {
-                    "description": "页面权限标识",
-                    "type": "string"
-                },
-                "permission_id": {
-                    "description": "菜单对应权限id",
-                    "type": "integer"
-                },
-                "sort": {
-                    "description": "排序",
-                    "type": "integer"
-                },
-                "title": {
-                    "description": "菜单标题",
-                    "type": "string"
-                },
-                "update_by": {
-                    "description": "修改者",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "integer"
-                },
-                "visible": {
-                    "description": "菜单状态",
-                    "type": "boolean"
                 }
             }
         }

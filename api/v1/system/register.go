@@ -8,7 +8,7 @@ import (
 
 // @Summary 用户注册账号
 // @Description 用户注册接口
-// @Tags Base
+// @Tags 系统
 // @Accept  json
 // @Produce  json
 // @Param data body server.Register true "param"

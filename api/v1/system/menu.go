@@ -9,7 +9,7 @@ import (
 	"github.com/isjyi/os/tools/app/msg"
 )
 
-// @Summary 根据角色名称获取菜单列表数据（左菜单使用）
+// @Summary 根据角色名称获取菜单列表数据（侧边栏使用）
 // @Description 获取JSON
 // @Tags 菜单
 // @Param id path int true "id"

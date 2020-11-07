@@ -9,7 +9,7 @@ import (
 
 // @Summary 获取验证码
 // @Description 获取验证码
-// @Tags Base
+// @Tags 系统
 // @Accept  json
 // @Produce  json
 // @Success 200 {string} string	"{"code": 200,"data": [...]}"

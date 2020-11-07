@@ -13,7 +13,6 @@ func InitExamplesRouter(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gi
 	examplesNoCheckRoleRouter(r)
 	// 需要认证的路由
 	examplesCheckRoleRouter(r, authMiddleware)
-
 	return r
 }
 

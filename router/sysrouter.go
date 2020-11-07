@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isjyi/os/api/v1/system"
+	"github.com/isjyi/os/api/v1/system/dict"
 	"github.com/isjyi/os/handler"
 	"github.com/isjyi/os/middleware"
 	"github.com/isjyi/os/pkg/jwt"
@@ -58,6 +59,7 @@ func sysNoCheckRoleRouter(r *gin.RouterGroup) {
 	v1 := r.Group("/api/v1")
 	v1.POST("/register", system.Register)
 	v1.GET("/captcha", system.GenerateCaptchaHandler)
+	v1.GET("/dict/databytype/:type_id", dict.GetDictDataByDictTypeId)
 	registerSysSettingRouter(v1)
 }
 
@@ -66,6 +68,7 @@ func sysCheckRoleRouterInit(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddle
 	v1.POST("/login", authMiddleware.LoginHandler)
 
 	registerBaseRouter(v1, authMiddleware)
+	registerDictRouter(v1, authMiddleware)
 }
 
 func registerBaseRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
@@ -82,5 +85,12 @@ func registerSysSettingRouter(v1 *gin.RouterGroup) {
 	setting := v1.Group("/setting")
 	{
 		setting.GET("", system.GetSetting)
+	}
+}
+
+func registerDictRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+	dicts := v1.Group("/dict").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
+	{
+		dicts.GET("/type", dict.GetDictTypeList)
 	}
 }

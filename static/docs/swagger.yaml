@@ -1,5 +1,47 @@
 basePath: /api
 definitions:
+  DictData:
+    properties:
+      create_by:
+        description: 创建者
+        type: integer
+      createdAt:
+        type: integer
+      dataScope:
+        type: string
+      deletedAt:
+        type: integer
+      dict_type_id:
+        description: 字典类型
+        type: integer
+      id:
+        type: integer
+      is_default:
+        description: 默认
+        type: integer
+      label:
+        description: 数据标签
+        type: string
+      params:
+        type: string
+      remark:
+        description: 备注
+        type: string
+      sort:
+        description: 显示顺序
+        type: integer
+      status:
+        description: 状态
+        type: integer
+      update_by:
+        description: 更新者
+        type: integer
+      updatedAt:
+        type: integer
+      value:
+        description: 数据键值
+        type: integer
+    type: object
   InfoResponse:
     properties:
       avatar:
@@ -45,6 +87,73 @@ definitions:
     - phone
     - uuid
     type: object
+  Menu:
+    properties:
+      action:
+        description: 请求方式
+        type: string
+      children:
+        items:
+          $ref: '#/definitions/Menu'
+        type: array
+      component:
+        description: 组件路径
+        type: string
+      create_by:
+        description: 创建者
+        type: string
+      createdAt:
+        type: integer
+      deletedAt:
+        type: integer
+      icon:
+        description: 菜单图标
+        type: string
+      id:
+        description: id
+        type: integer
+      is_frame:
+        description: 是否外链
+        type: integer
+      menu_type:
+        description: 菜单类型
+        type: integer
+      name:
+        description: 菜单名称
+        type: string
+      no_cache:
+        description: 缓存
+        type: integer
+      parent_id:
+        description: 菜单父级id
+        type: integer
+      path:
+        description: 路由地址
+        type: string
+      paths:
+        description: 层级顺序
+        type: string
+      permission:
+        description: 页面权限标识
+        type: string
+      permission_id:
+        description: 菜单对应权限id
+        type: integer
+      sort:
+        description: 排序
+        type: integer
+      title:
+        description: 菜单标题
+        type: string
+      update_by:
+        description: 修改者
+        type: string
+      updatedAt:
+        type: integer
+      visible:
+        description: 菜单状态
+        type: integer
+    type: object
   Register:
     properties:
       code:
@@ -81,73 +190,6 @@ definitions:
         description: 消息
         type: string
     type: object
-  models.Menu:
-    properties:
-      action:
-        description: 请求方式
-        type: string
-      children:
-        items:
-          $ref: '#/definitions/models.Menu'
-        type: array
-      component:
-        description: 组件路径
-        type: string
-      create_by:
-        description: 创建者
-        type: string
-      createdAt:
-        type: integer
-      deletedAt:
-        type: integer
-      icon:
-        description: 菜单图标
-        type: string
-      id:
-        description: id
-        type: integer
-      is_frame:
-        description: 是否外链
-        type: boolean
-      menu_type:
-        description: 菜单类型
-        type: integer
-      name:
-        description: 菜单名称
-        type: string
-      no_cache:
-        description: 缓存
-        type: boolean
-      parent_id:
-        description: 菜单父级id
-        type: integer
-      path:
-        description: 路由地址
-        type: string
-      paths:
-        description: 层级顺序
-        type: string
-      permission:
-        description: 页面权限标识
-        type: string
-      permission_id:
-        description: 菜单对应权限id
-        type: integer
-      sort:
-        description: 排序
-        type: integer
-      title:
-        description: 菜单标题
-        type: string
-      update_by:
-        description: 修改者
-        type: string
-      updatedAt:
-        type: integer
-      visible:
-        description: 菜单状态
-        type: boolean
-    type: object
 host: localhost:8000
 info:
   contact:
@@ -157,6 +199,32 @@ info:
   title: OS Example API
   version: "1.0"
 paths:
+  /api/v1/dict/databytype/{type_id}:
+    get:
+      description: 获取JSON
+      parameters:
+      - description: type_id
+        in: path
+        name: type_id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/DictData'
+                  type: array
+              type: object
+      security:
+      - Bearer: []
+      summary: 通过字典类型id获取字典数据
+      tags:
+      - 字典数据
   /api/v1/menurole:
     get:
       description: 获取JSON
@@ -175,12 +243,16 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/models.Menu'
+                    $ref: '#/definitions/Menu'
                   type: array
               type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response'
       security:
       - Bearer: []
-      summary: 根据角色名称获取菜单列表数据（左菜单使用）
+      summary: 根据角色名称获取菜单列表数据（侧边栏使用）
       tags:
       - 菜单
   /api/v1/setting:
@@ -193,7 +265,7 @@ paths:
             type: string
       summary: 查询系统信息
       tags:
-      - 系统信息
+      - 系统
   /v1/captcha:
     get:
       consumes:
@@ -208,7 +280,7 @@ paths:
             type: string
       summary: 获取验证码
       tags:
-      - Base
+      - 系统
   /v1/info:
     get:
       description: 获取用户信息
@@ -226,7 +298,7 @@ paths:
       - Bearer: []
       summary: 获取用户信息
       tags:
-      - Base
+      - 系统
   /v1/login:
     post:
       consumes:
@@ -252,7 +324,7 @@ paths:
             type: string
       summary: 登陆
       tags:
-      - Base
+      - 系统
   /v1/logout:
     post:
       consumes:
@@ -267,7 +339,7 @@ paths:
       - Bearer: []
       summary: 退出登录
       tags:
-      - Base
+      - 系统
   /v1/register:
     post:
       consumes:
@@ -293,7 +365,7 @@ paths:
             $ref: '#/definitions/Response'
       summary: 用户注册账号
       tags:
-      - Base
+      - 系统
   /v1/role:
     get:
       description: 获取JSON
@@ -311,7 +383,7 @@ paths:
       - Bearer: []
       summary: 获取Role数据
       tags:
-      - Base
+      - 系统
 securityDefinitions:
   Bearer:
     in: header
