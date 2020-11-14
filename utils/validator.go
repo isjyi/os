@@ -98,16 +98,6 @@ func InitTrans(locale string) (err error) {
 	return
 }
 
-// SignUpParamStructLevelValidation 自定义SignUpParam结构体校验函数
-// func SignUpParamStructLevelValidation(sl validator.StructLevel) {
-// 	su := sl.Current().Interface().(SignUpParam)
-
-// 	if su.Password != su.RePassword {
-// 		// 输出错误提示信息，最后一个参数就是传递的param
-// 		sl.ReportError(su.RePassword, "re_password", "RePassword", "eqfield", "password")
-// 	}
-// }
-
 // registerTranslator 为自定义字段添加翻译功能
 func registerTranslator(tag string, msg string) validator.RegisterTranslationsFunc {
 	return func(trans ut.Translator) error {

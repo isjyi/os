@@ -73,6 +73,198 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/dict/type": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "tags": [
+                    "字典数据"
+                ],
+                "summary": "字典类型列表数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "字典名称",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "字典id",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "字典类型",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page_index",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "desc",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/PageResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/Page"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/models.SysDictType"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典类型"
+                ],
+                "summary": "修改字典类型",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/server.DictTypeUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"message\": \"更新成功！\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典数据"
+                ],
+                "summary": "添加字典类型",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/server.DictTypeCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"message\": \"添加成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/dict/type/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "获取JSON",
+                "tags": [
+                    "字典数据"
+                ],
+                "summary": "通过字典id获取字典类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.SysDictType"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/menurole": {
             "get": {
                 "security": [
@@ -340,9 +532,6 @@ var doc = `{
                 "dataScope": {
                     "type": "string"
                 },
-                "deletedAt": {
-                    "type": "integer"
-                },
                 "dict_type_id": {
                     "description": "字典类型",
                     "type": "integer"
@@ -375,9 +564,6 @@ var doc = `{
                 },
                 "update_by": {
                     "description": "更新者",
-                    "type": "integer"
-                },
-                "updatedAt": {
                     "type": "integer"
                 },
                 "value": {
@@ -472,9 +658,6 @@ var doc = `{
                 "createdAt": {
                     "type": "integer"
                 },
-                "deletedAt": {
-                    "type": "integer"
-                },
                 "icon": {
                     "description": "菜单图标",
                     "type": "string"
@@ -531,12 +714,44 @@ var doc = `{
                     "description": "修改者",
                     "type": "string"
                 },
-                "updatedAt": {
-                    "type": "integer"
-                },
                 "visible": {
                     "description": "菜单状态",
                     "type": "integer"
+                }
+            }
+        },
+        "Page": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "object"
+                },
+                "pageIndex": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                }
+            }
+        },
+        "PageResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "代码",
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "description": "数据集",
+                    "$ref": "#/definitions/Page"
+                },
+                "msg": {
+                    "description": "消息",
+                    "type": "string"
                 }
             }
         },
@@ -586,6 +801,90 @@ var doc = `{
                 "msg": {
                     "description": "消息",
                     "type": "string"
+                }
+            }
+        },
+        "models.SysDictType": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "字典名称",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "字典类型",
+                    "type": "string"
+                }
+            }
+        },
+        "server.DictTypeCreate": {
+            "type": "object",
+            "required": [
+                "name",
+                "status",
+                "type"
+            ],
+            "properties": {
+                "createBy": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "server.DictTypeUpdate": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "status",
+                "type"
+            ],
+            "properties": {
+                "createBy": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remark": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updateBy": {
+                    "type": "integer"
                 }
             }
         }

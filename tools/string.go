@@ -18,6 +18,14 @@ func StringToInt(e string) (int, error) {
 	return strconv.Atoi(e)
 }
 
+func StringToUint8(e string) (uint8, error) {
+	i, err := StringToInt(e)
+	if err != nil {
+		return 0, err
+	}
+	return uint8(i), nil
+}
+
 func StringToUInt64(e string) (uint64, error) {
 	return strconv.ParseUint(e, 0, 64)
 }

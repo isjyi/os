@@ -9,8 +9,6 @@ definitions:
         type: integer
       dataScope:
         type: string
-      deletedAt:
-        type: integer
       dict_type_id:
         description: 字典类型
         type: integer
@@ -35,8 +33,6 @@ definitions:
         type: integer
       update_by:
         description: 更新者
-        type: integer
-      updatedAt:
         type: integer
       value:
         description: 数据键值
@@ -104,8 +100,6 @@ definitions:
         type: string
       createdAt:
         type: integer
-      deletedAt:
-        type: integer
       icon:
         description: 菜单图标
         type: string
@@ -148,11 +142,33 @@ definitions:
       update_by:
         description: 修改者
         type: string
-      updatedAt:
-        type: integer
       visible:
         description: 菜单状态
         type: integer
+    type: object
+  Page:
+    properties:
+      count:
+        type: integer
+      list:
+        type: object
+      pageIndex:
+        type: integer
+      pageSize:
+        type: integer
+    type: object
+  PageResponse:
+    properties:
+      code:
+        description: 代码
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/Page'
+        description: 数据集
+      msg:
+        description: 消息
+        type: string
     type: object
   Register:
     properties:
@@ -190,6 +206,64 @@ definitions:
         description: 消息
         type: string
     type: object
+  models.SysDictType:
+    properties:
+      createdAt:
+        type: integer
+      id:
+        type: integer
+      name:
+        description: 字典名称
+        type: string
+      remark:
+        description: 备注
+        type: string
+      status:
+        description: 状态
+        type: integer
+      type:
+        description: 字典类型
+        type: string
+    type: object
+  server.DictTypeCreate:
+    properties:
+      createBy:
+        type: integer
+      name:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+      type:
+        type: string
+    required:
+    - name
+    - status
+    - type
+    type: object
+  server.DictTypeUpdate:
+    properties:
+      createBy:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      remark:
+        type: string
+      status:
+        type: integer
+      type:
+        type: string
+      updateBy:
+        type: integer
+    required:
+    - id
+    - name
+    - status
+    - type
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -223,6 +297,118 @@ paths:
       security:
       - Bearer: []
       summary: 通过字典类型id获取字典数据
+      tags:
+      - 字典数据
+  /api/v1/dict/type:
+    get:
+      description: 获取JSON
+      parameters:
+      - description: 字典名称
+        in: query
+        name: name
+        type: string
+      - description: 字典id
+        in: query
+        name: id
+        type: string
+      - description: 字典类型
+        in: query
+        name: type
+        type: string
+      - description: 页条数
+        in: query
+        name: page_size
+        type: integer
+      - description: 页码
+        in: query
+        name: page_index
+        type: integer
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/PageResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/Page'
+                  - properties:
+                      list:
+                        items:
+                          $ref: '#/definitions/models.SysDictType'
+                        type: array
+                    type: object
+              type: object
+      security:
+      - Bearer: []
+      summary: 字典类型列表数据
+      tags:
+      - 字典数据
+    post:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/server.DictTypeCreate'
+      responses:
+        "200":
+          description: '{"code": 200, "message": "添加成功"}'
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: 添加字典类型
+      tags:
+      - 字典数据
+    put:
+      consumes:
+      - application/json
+      description: 获取JSON
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/server.DictTypeUpdate'
+      responses:
+        "200":
+          description: '{"code": 200, "message": "更新成功！"}'
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: 修改字典类型
+      tags:
+      - 字典类型
+  /api/v1/dict/type/{id}:
+    get:
+      description: 获取JSON
+      parameters:
+      - description: 字典id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.SysDictType'
+              type: object
+      security:
+      - Bearer: []
+      summary: 通过字典id获取字典类型
       tags:
       - 字典数据
   /api/v1/menurole:
