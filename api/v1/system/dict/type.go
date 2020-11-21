@@ -26,7 +26,6 @@ func GetDictTypeList(c *gin.Context) {
 		app.Error(c, 402, err, "数据验证失败")
 		return
 	}
-
 	result, count, err := r.GetPage()
 	tools.HasError(err, "", -1)
 
@@ -75,7 +74,7 @@ func GetDictType(c *gin.Context) {
 
 	tools.HasError(err, "抱歉未找到相关信息", -1)
 
-	app.OK(c, result, msg.CreatedSuccess)
+	app.OK(c, result, msg.GetSuccess)
 }
 
 // @Summary 修改字典类型

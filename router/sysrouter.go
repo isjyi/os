@@ -96,5 +96,7 @@ func registerDictRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddlewar
 		dicts.POST("/type", dict.InsertDictType)
 		dicts.PUT("/type", dict.UpdateDictType)
 		dicts.DELETE("/type/:id", dict.DeleteDictType)
+
+		dicts.GET("/data", dict.GetDictDataList)
 	}
 }

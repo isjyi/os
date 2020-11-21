@@ -5,14 +5,14 @@ import (
 
 	"github.com/isjyi/os/global"
 	"github.com/isjyi/os/models"
-	"github.com/isjyi/os/tools/app/msg"
 	"gorm.io/gorm"
 )
 
 type DictTypeQuery struct {
-	Name string `form:"name" binding:"omitempty"`
-	Id   uint64 `form:"id"  binding:"omitempty"`
-	Type string `form:"type" binding:"omitempty"`
+	Name   string `form:"name" binding:"omitempty"`
+	Id     uint64 `form:"id"  binding:"omitempty"`
+	Type   string `form:"type" binding:"omitempty"`
+	Status int8   `form:"status" binding:"omitempty"`
 	PaginationQuery
 }
 
@@ -28,37 +28,38 @@ func (d *DictTypeQuery) scopeType(db *gorm.DB) {
 	}
 }
 
+func (d *DictTypeQuery) scopeName(db *gorm.DB) {
+	if d.Name != "" {
+		db.Where("name  like ?", "%"+d.Name+"%")
+	}
+}
+
+func (d *DictTypeQuery) scopeStatus(db *gorm.DB) {
+	if d.Status != 0 {
+		db.Where("status = ?", d.Status)
+	}
+}
+
 func (d *DictTypeQuery) GetPage() ([]models.SysDictType, int, error) {
 	var r []models.SysDictType
 	db := global.Eloquent.Table(models.SysDictType{}.TableName())
 	d.scopeId(db)
 	d.scopeType(db)
+	d.scopeName(db)
+	d.scopeStatus(db)
 
 	var count int64
-	res := db.Offset((d.GetPageIndex() - 1) * d.GetPageSize()).Limit(d.GetPageSize()).Find(&r)
-	if res.Error != nil {
-		return nil, 0, res.Error
+	if err := db.Offset((d.GetPageIndex() - 1) * d.GetPageSize()).Limit(d.GetPageSize()).Find(&r).Offset(-1).Limit(-1).Count(&count).Error; err != nil {
+		return nil, 0, err
 	}
 
-	if res.RowsAffected == 0 {
-		return nil, 0, errors.New(msg.NotFound)
-	}
-
-	res = db.Offset(-1).Limit(-1).Count(&count)
-	if res.Error != nil {
-		return nil, 0, res.Error
-	}
-
-	if res.RowsAffected == 0 {
-		return nil, 0, errors.New(msg.NotFound)
-	}
 	return r, int(count), nil
 }
 
 func (d *DictTypeQuery) Get() (models.SysDictType, error) {
 	var r models.SysDictType
 
-	if err := global.Eloquent.First(&r, d.Id).Error; err != nil {
+	if err := global.Eloquent.Where(&models.SysDictType{Id: d.Id}).First(&r).Error; err != nil {
 		return r, err
 	}
 
@@ -124,4 +125,45 @@ func (d *DictTypeDelect) BatchDelete() error {
 	}
 
 	return nil
+}
+
+type DictDataQuery struct {
+	Label  string `form:"label" binding:"omitempty"`
+	TypeId uint64 `form:"type_id"  binding:"omitempty"`
+	Status int8   `form:"status" binding:"omitempty"`
+	PaginationQuery
+}
+
+func (d *DictDataQuery) scopeTypeId(db *gorm.DB) {
+	if d.TypeId != 0 {
+		db.Where("dict_type_id = ?", d.TypeId)
+	}
+}
+
+func (d *DictDataQuery) scopeLabel(db *gorm.DB) {
+	if d.Label != "" {
+		db.Where("label  like ?", "%"+d.Label+"%")
+	}
+}
+
+func (d *DictDataQuery) scopeStatus(db *gorm.DB) {
+	if d.Status != 0 {
+		db.Where("status = ?", d.Status)
+	}
+}
+
+func (d *DictDataQuery) GetPage() ([]models.SysDictData, int, error) {
+	var r []models.SysDictData
+	db := global.Eloquent.Table(models.SysDictData{}.TableName())
+	d.scopeTypeId(db)
+	d.scopeStatus(db)
+	d.scopeLabel(db)
+
+	var count int64
+
+	if err := db.Offset((d.GetPageIndex() - 1) * d.GetPageSize()).Limit(d.GetPageSize()).Find(&r).Offset(-1).Limit(-1).Count(&count).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return r, int(count), nil
 }
